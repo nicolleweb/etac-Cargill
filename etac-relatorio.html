@@ -158,7 +158,6 @@
           <tr><td>Vazão Permeado OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
           <tr><td>Vazão Rejeito OR1</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
           <tr><td>Vazão Rejeito OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
-          <tr><td>Pressão Diferencial Filtros</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
           <tr><td>Nível Tanque Desmi</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
         </tbody>
       </table>
@@ -174,7 +173,6 @@
         <tbody>
           <tr><td>Turbidez</td><td><select><option>Água bruta</option><option>Pós-filtro</option><option>Saída</option></select></td><td><input type="number" step="0.01" placeholder="0,50"></td><td><input class="limite" type="text" value="&lt; 1,0 NTU"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
           <tr><td>Cloro Residual Livre</td><td><select><option>Saída</option><option>Rede</option></select></td><td><input type="number" step="0.01" placeholder="0,50"></td><td><input class="limite" type="text" value="0,2 – 2,0 mg/L"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
-          <tr><td>Condutividade OR1</td><td><select><option>Permeado OR1</option><option>Alimentação OR1</option></select></td><td><input type="number" step="0.1" placeholder="50"></td><td><input class="limite" type="text" value="&lt; 200 µS/cm"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
           <tr><td>SDI OR1</td><td><select><option>Alimentação OR1</option></select></td><td><input type="number" step="0.1" placeholder="3,0"></td><td><input class="limite" type="text" value="&lt; 5"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
           <tr><td>SDI OR2</td><td><select><option>Alimentação OR2</option></select></td><td><input type="number" step="0.1" placeholder="3,0"></td><td><input class="limite" type="text" value="&lt; 5"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
           <tr><td>Eficiência OR1</td><td><select><option>Sistema OR1</option></select></td><td><input type="number" step="0.1" placeholder="98,0"></td><td><input class="limite" type="text" value="&gt; 95%"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
@@ -202,10 +200,10 @@
 
   <!-- PRODUTOS DOSADOS -->
   <div class="card">
-    <div class="card-title"><span class="dot dot-amber"></span> Produtos Dosados no Dia</div>
+    <div class="card-title"><span class="dot dot-amber"></span> Produto que foi dosado ou ajustado</div>
     <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:8px;margin-bottom:6px;padding:0 4px;">
       <span class="field-label">Produto</span>
-      <span class="field-label">Quantidade</span>
+      <span class="field-label">Ajuste ou qtd. dosada</span>
       <span class="field-label">Local dosado</span>
       <span class="field-label">Troca de produto?</span>
     </div>
