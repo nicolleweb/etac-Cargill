@@ -7,169 +7,146 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:#f0f2f4;--surface:#fff;--surface2:#f4f6f8;--border:#dde1e7;
-    --accent:#00703C;--accent-dark:#005a30;--accent-light:#e6f4ed;
-    --accent2:#2e7d52;--accent3:#d97706;--danger:#dc2626;
-    --text:#1a1f2e;--muted:#6b7280;--mono:'DM Mono',monospace;--sans:'Sora',sans-serif;
+    --bg: #f0f2f4;
+    --surface: #ffffff;
+    --surface2: #f4f6f8;
+    --border: #dde1e7;
+    --accent: #00703C;
+    --accent-dark: #005a30;
+    --accent-light: #e6f4ed;
+    --accent2: #2e7d52;
+    --accent3: #d97706;
+    --danger: #dc2626;
+    --text: #1a1f2e;
+    --muted: #6b7280;
+    --mono: 'DM Mono', monospace;
+    --sans: 'Sora', sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
-
-  /* LOGIN OVERLAY */
-  #login-overlay{position:fixed;inset:0;background:var(--accent);z-index:99999;display:flex;align-items:center;justify-content:center;}
-  .login-box{background:white;border-radius:20px;padding:40px 36px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
-  .login-logo{width:56px;height:56px;background:var(--accent);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
-  .login-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:4px;}
-  .login-sub{font-size:12px;color:var(--muted);margin-bottom:24px;}
-  .login-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 16px;font-family:var(--sans);font-size:14px;color:var(--text);outline:none;text-align:center;letter-spacing:4px;font-size:18px;margin-bottom:12px;}
-  .login-input:focus{border-color:var(--accent);}
-  .login-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:10px;padding:13px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;transition:background 0.2s;}
-  .login-btn:hover{background:var(--accent-dark);}
-  .login-error{color:var(--danger);font-size:12px;margin-top:8px;display:none;}
-
-  header{padding:0 40px;display:flex;align-items:stretch;background:var(--accent);border-bottom:4px solid #005a30;min-height:64px;}
-  .logo-mark{display:flex;align-items:center;gap:10px;padding:0 24px 0 0;margin-right:24px;border-right:1px solid rgba(255,255,255,0.2);flex-shrink:0;}
-  .logo-icon{width:38px;height:38px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;}
-  .logo-text{font-weight:700;font-size:16px;color:white;}
-  .header-title{display:flex;flex-direction:column;justify-content:center;}
-  .header-title h1{font-size:15px;font-weight:700;color:white;}
-  .header-title span{font-size:11px;color:rgba(255,255,255,0.65);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;}
-  nav{margin-left:auto;display:flex;align-items:stretch;}
-  .tab-btn{background:none;border:none;color:rgba(255,255,255,0.7);font-family:var(--sans);font-size:13px;font-weight:600;padding:0 20px;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:7px;text-decoration:none;}
-  .tab-btn:hover{color:white;background:rgba(255,255,255,0.1);}
-  .tab-btn.active{color:white;border-bottom-color:white;background:rgba(255,255,255,0.12);}
-  .nav-link{background:none;border:none;color:rgba(255,255,255,0.7);font-family:var(--sans);font-size:13px;font-weight:600;padding:0 20px;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:7px;text-decoration:none;}
-  .nav-link:hover{color:white;background:rgba(255,255,255,0.1);}
-
-  main{padding:36px 40px;max-width:1100px;}
-  .tab-panel{display:none;}
-  .tab-panel.active{display:block;animation:fadeIn 0.3s ease;}
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
-  .section-label{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;font-weight:500;}
-  .section-title{font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px;}
-  .section-desc{color:var(--muted);font-size:14px;margin-bottom:36px;line-height:1.6;}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:20px;}
-  .card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-  .card-title .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;}
-
-  /* PROCESSO */
-  .process-flow{display:flex;flex-direction:column;gap:0;}
-  .process-step{display:grid;grid-template-columns:56px 1fr;gap:20px;}
-  .step-line{display:flex;flex-direction:column;align-items:center;}
-  .step-num{width:40px;height:40px;border-radius:50%;background:var(--surface2);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex-shrink:0;z-index:1;transition:all 0.2s;}
-  .process-step:hover .step-num{background:var(--accent);color:white;border-color:var(--accent);}
-  .step-connector{width:2px;flex:1;min-height:24px;background:var(--border);margin:4px 0;}
-  .process-step:last-child .step-connector{display:none;}
-  .step-body{padding-bottom:28px;}
-  .step-tag{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-  .step-name{font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;}
-  .step-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:12px;}
-  .step-tags{display:flex;flex-wrap:wrap;gap:6px;}
-  .tag{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:20px;border:1px solid;}
-  .tag.green{color:var(--accent);border-color:rgba(0,112,60,0.3);background:rgba(0,112,60,0.07);}
-  .tag.blue{color:#1d6fa5;border-color:rgba(29,111,165,0.3);background:rgba(29,111,165,0.07);}
-  .tag.amber{color:var(--accent3);border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.07);}
-  .tag.red{color:var(--danger);border-color:rgba(239,68,68,0.3);background:rgba(239,68,68,0.07);}
-  .alert-box{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.25);border-radius:10px;padding:12px 16px;font-size:12.5px;color:#92400e;line-height:1.55;margin-top:10px;display:flex;gap:10px;}
-  .param-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:10px;}
-  .param-card{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
-  .param-name{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
-  .param-value{font-family:var(--mono);font-size:18px;font-weight:500;color:var(--text);}
-  .param-unit{font-size:11px;color:var(--muted);margin-left:3px;}
-
-  /* FLUXOGRAMA */
-  .fluxo-wrap{overflow-x:auto;padding:20px 0;}
-  .fluxo{display:flex;align-items:center;gap:0;min-width:900px;}
-  .fluxo-box{background:var(--surface);border:2px solid var(--border);border-radius:12px;padding:14px 16px;min-width:110px;text-align:center;position:relative;transition:all 0.2s;cursor:default;}
-  .fluxo-box:hover{border-color:var(--accent);background:var(--accent-light);}
-  .fluxo-box.green{border-color:var(--accent);background:var(--accent-light);}
-  .fluxo-box.blue{border-color:#3b82f6;background:#eff6ff;}
-  .fluxo-box.amber{border-color:var(--accent3);background:#fffbeb;}
-  .fluxo-box.red{border-color:var(--danger);background:#fef2f2;}
-  .fluxo-icon{font-size:22px;margin-bottom:6px;}
-  .fluxo-label{font-size:11px;font-weight:700;color:var(--text);line-height:1.3;}
-  .fluxo-sub{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.3;}
-  .fluxo-arrow{font-size:20px;color:var(--muted);padding:0 4px;flex-shrink:0;}
-  .fluxo-split{display:flex;flex-direction:column;gap:8px;align-items:center;}
-  .fluxo-split-row{display:flex;align-items:center;gap:4px;}
-
-  /* ÁREA LIVRE EDITÁVEL */
-  .free-section{background:var(--surface);border:2px dashed var(--border);border-radius:14px;padding:28px;margin-bottom:20px;min-height:120px;}
-  .free-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-  .free-section-title{font-size:14px;font-weight:700;color:var(--text);}
-  .free-content{font-size:13px;color:var(--muted);line-height:1.7;outline:none;}
-  .free-content:empty::before{content:attr(data-placeholder);color:var(--border);}
-  .free-content img{max-width:100%;border-radius:8px;margin:8px 0;}
-  .btn-add-img{background:var(--accent-light);color:var(--accent);border:1px solid rgba(0,112,60,0.3);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans);transition:all 0.2s;}
-  .btn-add-img:hover{background:var(--accent);color:white;}
-
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; }
+  header {
+    padding: 0 40px; display: flex; align-items: stretch; gap: 0;
+    background: var(--accent); border-bottom: 4px solid #005a30; min-height: 64px;
+  }
+  .logo-mark {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 24px 0 0; margin-right: 24px;
+    border-right: 1px solid rgba(255,255,255,0.2); flex-shrink: 0;
+  }
+  .logo-icon {
+    width: 38px; height: 38px; background: white; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { display: block; }
+  .logo-text { font-family: var(--sans); font-weight: 700; font-size: 16px; color: white; letter-spacing: 0.3px; }
+  .header-title { display: flex; flex-direction: column; justify-content: center; }
+  .header-title h1 { font-size: 15px; font-weight: 700; letter-spacing: 0.3px; color: white; }
+  .header-title span { font-size: 11px; color: rgba(255,255,255,0.65); font-family: var(--mono); letter-spacing: 1px; text-transform: uppercase; }
+  nav { margin-left: auto; display: flex; gap: 0; align-items: stretch; }
+  .tab-btn {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    padding: 0 22px; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all 0.2s; letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .tab-btn:hover { color: white; background: rgba(255,255,255,0.1); }
+  .tab-btn.active { color: white; border-bottom-color: white; background: rgba(255,255,255,0.12); }
+  .nav-link {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    font-family: var(--sans); font-size: 13px; font-weight: 600;
+    padding: 0 22px; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: all 0.2s; letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 7px; text-decoration: none;
+  }
+  .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+  .tab-icon { font-size: 15px; }
+  main { padding: 36px 40px; max-width: 1100px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .section-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; font-weight: 500; }
+  .section-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.2; }
+  .section-desc { color: var(--muted); font-size: 14px; margin-bottom: 36px; line-height: 1.6; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; letter-spacing: 0.3px; }
+  .card-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+  .process-flow { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .process-step { display: grid; grid-template-columns: 56px 1fr; gap: 20px; position: relative; }
+  .step-line { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .step-num {
+    width: 40px; height: 40px; border-radius: 50%; background: var(--surface2);
+    border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent);
+    flex-shrink: 0; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.08); transition: all 0.2s;
+  }
+  .process-step:hover .step-num { background: var(--accent); color: white; border-color: var(--accent); }
+  .step-connector { width: 2px; flex: 1; min-height: 24px; background: linear-gradient(to bottom, var(--border), var(--border)); margin: 4px 0; }
+  .process-step:last-child .step-connector { display: none; }
+  .step-body { padding-bottom: 28px; }
+  .step-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+  .step-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .step-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 12px; }
+  .step-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 3px 10px; border-radius: 20px; border: 1px solid; }
+  .tag.green { color: var(--accent); border-color: rgba(0,112,60,0.3); background: rgba(0,112,60,0.07); }
+  .tag.blue { color: #1d6fa5; border-color: rgba(29,111,165,0.3); background: rgba(29,111,165,0.07); }
+  .tag.amber { color: var(--accent3); border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.07); }
+  .tag.red { color: var(--danger); border-color: rgba(239,68,68,0.3); background: rgba(239,68,68,0.07); }
+  .alert-box { background: rgba(217,119,6,0.07); border: 1px solid rgba(217,119,6,0.25); border-radius: 10px; padding: 12px 16px; font-size: 12.5px; color: #92400e; line-height: 1.55; margin-top: 10px; display: flex; gap: 10px; }
+  .alert-box .icon { flex-shrink: 0; }
+  .param-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 10px; }
+  .param-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .param-name { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .param-value { font-family: var(--mono); font-size: 18px; font-weight: 500; color: var(--text); }
+  .param-unit { font-size: 11px; color: var(--muted); margin-left: 3px; }
   /* GUIA */
-  .guide-grid{display:grid;grid-template-columns:220px 1fr;gap:24px;}
-  .guide-menu{display:flex;flex-direction:column;gap:2px;position:sticky;top:20px;}
-  .guide-menu-btn{background:none;border:none;color:var(--muted);font-family:var(--sans);font-size:13px;text-align:left;padding:10px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:9px;transition:all 0.15s;font-weight:500;}
-  .guide-menu-btn:hover{background:var(--accent-light);color:var(--accent);}
-  .guide-menu-btn.active{background:var(--accent-light);color:var(--accent);border-left:3px solid var(--accent);}
-  .guide-panel{display:none;}
-  .guide-panel.active{display:block;animation:fadeIn 0.25s ease;}
-  .guide-content h3{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;}
-  .guide-intro{color:var(--muted);font-size:13.5px;line-height:1.7;margin-bottom:24px;border-left:4px solid var(--accent);padding-left:16px;}
-  .guide-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 22px;margin-bottom:16px;}
-  .guide-block h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
-  .guide-block ul{list-style:none;display:flex;flex-direction:column;gap:9px;}
-  .guide-block ul li{font-size:13px;color:var(--muted);line-height:1.6;padding-left:18px;position:relative;}
-  .guide-block ul li::before{content:'→';position:absolute;left:0;color:var(--accent);font-size:12px;}
-  .guide-block ul li strong{color:var(--text);}
-  .warning-block{background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:10px;padding:16px 18px;margin-bottom:14px;}
-  .warning-block h4{font-size:13px;font-weight:700;color:var(--danger);margin-bottom:10px;}
-  .warning-block ul{list-style:none;display:flex;flex-direction:column;gap:7px;}
-  .warning-block ul li{font-size:13px;color:#991b1b;line-height:1.6;padding-left:14px;position:relative;}
-  .warning-block ul li::before{content:'!';position:absolute;left:0;color:var(--danger);font-weight:700;}
-  .tip-block{background:rgba(0,112,60,0.06);border:1px solid rgba(0,112,60,0.2);border-radius:10px;padding:14px 18px;font-size:13px;color:#166534;line-height:1.6;margin-bottom:14px;display:flex;gap:10px;}
-  .glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .glossary-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
-  .glossary-term{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700;margin-bottom:4px;}
-  .glossary-def{font-size:12.5px;color:var(--muted);line-height:1.55;}
-
+  .guide-grid { display: grid; grid-template-columns: 220px 1fr; gap: 24px; }
+  .guide-menu { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 20px; }
+  .guide-menu-btn { background: none; border: none; color: var(--muted); font-family: var(--sans); font-size: 13px; text-align: left; padding: 10px 14px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 9px; transition: all 0.15s; font-weight: 500; }
+  .guide-menu-btn:hover { background: var(--accent-light); color: var(--accent); }
+  .guide-menu-btn.active { background: var(--accent-light); color: var(--accent); border-left: 3px solid var(--accent); }
+  .guide-panel { display: none; }
+  .guide-panel.active { display: block; animation: fadeIn 0.25s ease; }
+  .guide-content h3 { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .guide-intro { color: var(--muted); font-size: 13.5px; line-height: 1.7; margin-bottom: 24px; border-left: 4px solid var(--accent); padding-left: 16px; }
+  .guide-block { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin-bottom: 16px; }
+  .guide-block h4 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .guide-block ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .guide-block ul li { font-size: 13px; color: var(--muted); line-height: 1.6; padding-left: 18px; position: relative; }
+  .guide-block ul li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 12px; }
+  .guide-block ul li strong { color: var(--text); }
+  .warning-block { background: rgba(239,68,68,0.07); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+  .warning-block h4 { font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
+  .warning-block ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .warning-block ul li { font-size: 13px; color: #991b1b; line-height: 1.6; padding-left: 14px; position: relative; }
+  .warning-block ul li::before { content: '!'; position: absolute; left: 0; color: var(--danger); font-weight: 700; font-size: 12px; }
+  .tip-block { background: rgba(0,112,60,0.06); border: 1px solid rgba(0,112,60,0.2); border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #166534; line-height: 1.6; margin-bottom: 14px; display: flex; gap: 10px; }
+  .glossary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .glossary-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .glossary-term { font-family: var(--mono); font-size: 13px; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+  .glossary-def { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
   /* EDIT BAR */
-  #edit-bar{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:40px;padding:8px 8px 8px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(0,0,0,0.15);}
-  .edit-hint{font-size:11px;color:var(--muted);font-family:var(--mono);display:none;white-space:nowrap;}
-  #edit-toggle-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--sans);font-size:12px;font-weight:600;padding:8px 16px;border-radius:30px;cursor:pointer;transition:all 0.2s;}
-  #edit-toggle-btn:hover{color:var(--text);border-color:var(--text);}
-  #download-btn{background:var(--accent);border:none;color:white;font-family:var(--sans);font-size:12px;font-weight:600;padding:8px 16px;border-radius:30px;cursor:pointer;}
-  #download-btn:hover{background:#005a30;}
-  body.edit-active [data-editable]:hover{outline:2px dashed rgba(0,112,60,0.5);border-radius:4px;cursor:text;}
-  body.edit-active [data-editable]:focus{outline:2px solid var(--accent);border-radius:4px;background:rgba(0,112,60,0.05);}
-
-  @media(max-width:700px){
-    header{padding:18px 16px 0;flex-wrap:wrap;}
-    nav{margin-left:0;width:100%;overflow-x:auto;}
-    main{padding:24px 16px;}
-    .guide-grid{grid-template-columns:1fr;}
-    .guide-menu{flex-direction:row;overflow-x:auto;position:static;}
-    .glossary-grid{grid-template-columns:1fr;}
+  #edit-bar { position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; padding: 8px 8px 8px 16px; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+  .edit-hint { font-size: 11px; color: var(--muted); font-family: var(--mono); display: none; white-space: nowrap; }
+  #edit-toggle-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: var(--sans); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 30px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  #edit-toggle-btn:hover { color: var(--text); border-color: var(--text); }
+  #download-btn { background: var(--accent); border: none; color: white; font-family: var(--sans); font-size: 12px; font-weight: 600; padding: 8px 16px; border-radius: 30px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  #download-btn:hover { background: #005a30; }
+  body.edit-active [data-editable]:hover { outline: 2px dashed rgba(0,112,60,0.5); border-radius: 4px; cursor: text; }
+  body.edit-active [data-editable]:focus { outline: 2px solid var(--accent); border-radius: 4px; background: rgba(0,112,60,0.05); }
+  @media print { body { background: white; } nav, .guide-menu, #edit-bar { display: none; } .tab-panel { display: block !important; } }
+  @media (max-width: 700px) {
+    header { padding: 18px 16px 0; flex-wrap: wrap; }
+    nav { margin-left: 0; width: 100%; overflow-x: auto; }
+    main { padding: 24px 16px; }
+    .guide-grid { grid-template-columns: 1fr; }
+    .guide-menu { flex-direction: row; overflow-x: auto; position: static; }
+    .glossary-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div id="login-overlay">
-  <div class="login-box">
-    <div class="login-logo">
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-        <path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="white"/>
-        <circle cx="12" cy="10" r="3" fill="#00703C"/>
-      </svg>
-    </div>
-    <div class="login-title">ETAC — Cargill</div>
-    <div class="login-sub">Portal Operacional · Acesso restrito</div>
-    <input class="login-input" type="password" id="senha-input" placeholder="••••" maxlength="20"
-      onkeydown="if(event.key==='Enter') verificarSenha()">
-    <button class="login-btn" onclick="verificarSenha()">🔓 Entrar</button>
-    <div class="login-error" id="login-error">Senha incorreta. Tente novamente.</div>
-  </div>
-</div>
 
 <header>
   <div class="logo-mark">
@@ -186,16 +163,20 @@
     <span>ETA + Osmose Reversa</span>
   </div>
   <nav>
-    <button class="tab-btn active" onclick="switchTab('processo',this)">⚙️ Processo</button>
-    <button class="tab-btn" onclick="switchTab('guia',this)">📖 Guia do Operador</button>
-    <a class="nav-link" href="etac-relatorio.html">📋 Relatório</a>
-    <a class="nav-link" href="etac-historico.html">🗂️ Histórico</a>
+    <button class="tab-btn active" onclick="switchTab('processo', this)">
+      <span class="tab-icon">⚙️</span> Processo
+    </button>
+    <button class="tab-btn" onclick="switchTab('guia', this)">
+      <span class="tab-icon">📖</span> Guia do Operador
+    </button>
+    <a class="nav-link" href="etac-relatorio.html"><span class="tab-icon">📋</span> Relatório</a>
+    <a class="nav-link" href="etac-historico.html"><span class="tab-icon">🗂️</span> Histórico</a>
   </nav>
 </header>
 
 <main>
 
-<!-- ABA PROCESSO -->
+<!-- ABA 1: PROCESSO -->
 <div id="tab-processo" class="tab-panel active">
   <p class="section-label">Fluxo operacional</p>
   <h2 class="section-title">Processo de Tratamento de Água</h2>
@@ -206,28 +187,39 @@
       <div class="step-line"><div class="step-num">01</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Entrada do sistema</div>
-        <div class="step-name" contenteditable="false">Captação e Adução</div>
-        <div class="step-desc" contenteditable="false">Água bruta é captada da fonte e conduzida até a estação por adutoras. Verifica-se a vazão de entrada e as condições iniciais da água.</div>
-        <div class="step-tags"><span class="tag green">Vazão de entrada</span><span class="tag blue">Medidor de nível</span><span class="tag amber">Bomba de captação</span></div>
+        <div class="step-name">Captação e Adução</div>
+        <div class="step-desc">Água bruta é captada da fonte (rio, poço ou reservatório) e conduzida até a estação por adutoras. Nesta fase, verifica-se a vazão de entrada e as condições iniciais da água.</div>
+        <div class="step-tags">
+          <span class="tag green">Vazão de entrada</span>
+          <span class="tag blue">Medidor de nível</span>
+          <span class="tag amber">Bomba de captação</span>
+        </div>
       </div>
     </div>
     <div class="process-step">
       <div class="step-line"><div class="step-num">02</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Pré-tratamento</div>
-        <div class="step-name" contenteditable="false">Gradeamento e Desarenação</div>
-        <div class="step-desc" contenteditable="false">Grades retêm resíduos sólidos grosseiros. O desarenador remove areia e partículas sedimentáveis por gravidade, protegendo os equipamentos a jusante.</div>
-        <div class="step-tags"><span class="tag green">Sólidos removidos</span><span class="tag amber">Limpeza periódica</span></div>
-        <div class="alert-box"><span>⚠️</span><span contenteditable="false">Grades entupidas causam queda de pressão e sobrecarga nas bombas. Verificar e limpar conforme rotina estabelecida.</span></div>
+        <div class="step-name">Gradeamento e Desarenação</div>
+        <div class="step-desc">Grades retêm resíduos sólidos grosseiros. O desarenador remove areia e partículas sedimentáveis por gravidade, protegendo os equipamentos a jusante.</div>
+        <div class="step-tags">
+          <span class="tag green">Sólidos removidos</span>
+          <span class="tag amber">Limpeza periódica</span>
+        </div>
+        <div class="alert-box"><span class="icon">⚠️</span><span>Grades entupidas causam queda de pressão e sobrecarga nas bombas. Verificar e limpar conforme rotina estabelecida.</span></div>
       </div>
     </div>
     <div class="process-step">
       <div class="step-line"><div class="step-num">03</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Coagulação / Floculação</div>
-        <div class="step-name" contenteditable="false">Dosagem de Produtos Químicos</div>
-        <div class="step-desc" contenteditable="false">Adição de coagulante para agrupar partículas em suspensão em flocos maiores. A floculação agita suavemente a água para favorecer a aglomeração.</div>
-        <div class="step-tags"><span class="tag blue">Coagulante</span><span class="tag blue">pH ótimo: 6,5–7,5</span><span class="tag green">Tempo de contato</span></div>
+        <div class="step-name">Dosagem de Produtos Químicos</div>
+        <div class="step-desc">Adição de coagulante (ex: sulfato de alumínio ou cloreto férrico) para agrupar partículas em suspensão em flocos maiores. A floculação agita suavemente a água para favorecer a aglomeração.</div>
+        <div class="step-tags">
+          <span class="tag blue">Coagulante</span>
+          <span class="tag blue">pH ótimo: 6,5–7,5</span>
+          <span class="tag green">Tempo de contato</span>
+        </div>
         <div class="param-grid">
           <div class="param-card"><div class="param-name">pH ideal</div><div class="param-value">6,5 <span class="param-unit">– 7,5</span></div></div>
           <div class="param-card"><div class="param-name">Jar-test</div><div class="param-value">Rotina <span class="param-unit">diária</span></div></div>
@@ -238,28 +230,41 @@
       <div class="step-line"><div class="step-num">04</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Clarificação</div>
-        <div class="step-name" contenteditable="false">Decantação / Flotação</div>
-        <div class="step-desc" contenteditable="false">Os flocos formados sedimentam no fundo (decantação) ou sobem à superfície (flotação), sendo removidos como lodo. A água clarificada segue para a próxima etapa.</div>
-        <div class="step-tags"><span class="tag green">Água clarificada</span><span class="tag amber">Descarte de lodo</span><span class="tag blue">Turbidez &lt; 2 NTU</span></div>
+        <div class="step-name">Decantação / Flotação</div>
+        <div class="step-desc">Os flocos formados sedimentam no fundo (decantação) ou sobem à superfície (flotação), sendo removidos como lodo. A água clarificada segue para a próxima etapa.</div>
+        <div class="step-tags">
+          <span class="tag green">Água clarificada</span>
+          <span class="tag amber">Descarte de lodo</span>
+          <span class="tag blue">Turbidez &lt; 2 NTU</span>
+        </div>
       </div>
     </div>
     <div class="process-step">
       <div class="step-line"><div class="step-num">05</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Filtração</div>
-        <div class="step-name" contenteditable="false">Filtros de Areia / Carvão Ativado</div>
-        <div class="step-desc" contenteditable="false">Passagem da água por leitos filtrantes para remoção de partículas residuais e matéria orgânica. Retrolavagem periódica é essencial para manter a eficiência.</div>
-        <div class="step-tags"><span class="tag green">Retrolavagem</span><span class="tag blue">Perda de carga</span><span class="tag amber">Frequência monitorada</span></div>
-        <div class="alert-box"><span>⚠️</span><span contenteditable="false">Filtros colmatados aumentam a perda de carga e reduzem a qualidade do efluente. Registrar data e hora de cada retrolavagem.</span></div>
+        <div class="step-name">Filtros de Areia / Carvão Ativado</div>
+        <div class="step-desc">Passagem da água por leitos filtrantes para remoção de partículas residuais e parte da matéria orgânica. Retrolavagem periódica é essencial para manter a eficiência dos filtros.</div>
+        <div class="step-tags">
+          <span class="tag green">Retrolavagem</span>
+          <span class="tag blue">Perda de carga</span>
+          <span class="tag amber">Frequência monitorada</span>
+        </div>
+        <div class="alert-box"><span class="icon">⚠️</span><span>Filtros colmatados aumentam a perda de carga e reduzem a qualidade do efluente. Registrar data e hora de cada retrolavagem.</span></div>
       </div>
     </div>
     <div class="process-step">
       <div class="step-line"><div class="step-num">06</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Osmose Reversa</div>
-        <div class="step-name" contenteditable="false">Membranas de OR</div>
-        <div class="step-desc" contenteditable="false">A água pré-tratada é pressurizada e passa por membranas semipermeáveis que retêm sais, minerais, bactérias e compostos orgânicos. Gera permeado (água tratada) e concentrado (rejeito).</div>
-        <div class="step-tags"><span class="tag blue">Pressão de operação</span><span class="tag green">Taxa de recuperação</span><span class="tag amber">SDI da alimentação</span><span class="tag red">Rejeito</span></div>
+        <div class="step-name">Membranas de OR</div>
+        <div class="step-desc">A água pré-tratada é pressurizada e passa por membranas semipermeáveis que retêm sais, minerais, bactérias e compostos orgânicos. Gera dois fluxos: <strong>permeado</strong> (água tratada) e <strong>concentrado</strong> (rejeito).</div>
+        <div class="step-tags">
+          <span class="tag blue">Pressão de operação</span>
+          <span class="tag green">Taxa de recuperação</span>
+          <span class="tag amber">SDI da alimentação</span>
+          <span class="tag red">Rejeito / concentrado</span>
+        </div>
         <div class="param-grid">
           <div class="param-card"><div class="param-name">Pressão típica</div><div class="param-value">10 <span class="param-unit">– 15 bar</span></div></div>
           <div class="param-card"><div class="param-name">Taxa de recup.</div><div class="param-value">70 <span class="param-unit">– 80 %</span></div></div>
@@ -272,241 +277,237 @@
       <div class="step-line"><div class="step-num">07</div><div class="step-connector"></div></div>
       <div class="step-body">
         <div class="step-tag">Pós-tratamento e saída</div>
-        <div class="step-name" contenteditable="false">Desinfecção e Distribuição</div>
-        <div class="step-desc" contenteditable="false">Cloração, ajuste de pH e remineralização antes da distribuição. Coleta de amostras para análise laboratorial e liberação da água para consumo.</div>
-        <div class="step-tags"><span class="tag green">Cloro residual</span><span class="tag blue">pH 6,5–8,5</span><span class="tag green">Laudo de qualidade</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FLUXOGRAMA COMPLETO -->
-  <div class="card" style="margin-top:32px;">
-    <div class="card-title"><span class="dot"></span> Fluxograma Completo do Processo</div>
-    <div class="fluxo-wrap">
-      <div class="fluxo">
-        <div class="fluxo-box green"><div class="fluxo-icon">💧</div><div class="fluxo-label">Captação</div><div class="fluxo-sub">Manancial</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box"><div class="fluxo-icon">🔩</div><div class="fluxo-label">Gradeamento</div><div class="fluxo-sub">Sólidos grosseiros</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box"><div class="fluxo-icon">🌀</div><div class="fluxo-label">Desarenação</div><div class="fluxo-sub">Partículas finas</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box blue"><div class="fluxo-icon">🧪</div><div class="fluxo-label">Coagulação</div><div class="fluxo-sub">Dosagem química</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box blue"><div class="fluxo-icon">🌊</div><div class="fluxo-label">Floculação</div><div class="fluxo-sub">Agitação suave</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box"><div class="fluxo-icon">⬇️</div><div class="fluxo-label">Decantação</div><div class="fluxo-sub">Remoção de lodo</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box amber"><div class="fluxo-icon">🏗️</div><div class="fluxo-label">Filtração</div><div class="fluxo-sub">Areia / Carvão</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-split">
-          <div class="fluxo-split-row">
-            <div class="fluxo-box blue" style="min-width:90px"><div class="fluxo-icon">🔬</div><div class="fluxo-label">OR 1</div><div class="fluxo-sub">Osmose Rev.</div></div>
-          </div>
-          <div class="fluxo-split-row">
-            <div class="fluxo-box blue" style="min-width:90px"><div class="fluxo-icon">🔬</div><div class="fluxo-label">OR 2</div><div class="fluxo-sub">Osmose Rev.</div></div>
-          </div>
+        <div class="step-name">Desinfecção e Distribuição</div>
+        <div class="step-desc">Cloração, ajuste de pH e correção de dureza (remineralização) antes da distribuição. Coleta de amostras para análise laboratorial e liberação da água para consumo.</div>
+        <div class="step-tags">
+          <span class="tag green">Cloro residual</span>
+          <span class="tag blue">pH 6,5–8,5</span>
+          <span class="tag green">Laudo de qualidade</span>
         </div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box"><div class="fluxo-icon">⚗️</div><div class="fluxo-label">Cloração</div><div class="fluxo-sub">Desinfecção</div></div>
-        <div class="fluxo-arrow">→</div>
-        <div class="fluxo-box green"><div class="fluxo-icon">✅</div><div class="fluxo-label">Distribuição</div><div class="fluxo-sub">Água tratada</div></div>
       </div>
     </div>
-    <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;">
-      <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent-light);border:1px solid var(--accent);display:inline-block"></span>Captação / Saída</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#eff6ff;border:1px solid #3b82f6;display:inline-block"></span>Tratamento químico / OR</span>
-      <span style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted)"><span style="width:12px;height:12px;border-radius:3px;background:#fffbeb;border:1px solid var(--accent3);display:inline-block"></span>Filtração</span>
-    </div>
-  </div>
-
-  <!-- ÁREA LIVRE EDITÁVEL -->
-  <div class="card" style="border:2px dashed var(--border);">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <div style="font-size:13px;font-weight:700;color:var(--text);">📎 Informações adicionais / Arquivos e Fotos</div>
-      <div style="display:flex;gap:8px;">
-        <button class="btn-add-img" onclick="adicionarImagem()">📷 Inserir foto</button>
-        <button class="btn-add-img" onclick="adicionarTexto()">+ Adicionar texto</button>
-      </div>
-    </div>
-    <div id="area-livre" style="min-height:80px;">
-      <div id="area-livre-content" style="font-size:13px;color:var(--muted);line-height:1.7;outline:none;" contenteditable="false"
-        data-placeholder="Clique em '✏️ Ativar edição' para adicionar informações, procedimentos, fotos ou arquivos aqui...">
-        Clique em <strong>✏️ Ativar edição</strong> para adicionar informações, procedimentos, fotos ou arquivos aqui.
-      </div>
-    </div>
-    <input type="file" id="file-input" accept="image/*,.pdf" multiple style="display:none" onchange="handleFiles(event)">
   </div>
 </div>
 
-<!-- ABA GUIA -->
+<!-- ABA 2: GUIA DO OPERADOR -->
 <div id="tab-guia" class="tab-panel">
   <p class="section-label">Onboarding operacional</p>
   <h2 class="section-title">Guia do Operador</h2>
   <p class="section-desc">Tudo que você precisa saber para operar a ETAC com segurança e eficiência.</p>
   <div class="guide-grid">
     <div class="guide-menu">
-      <button class="guide-menu-btn active" onclick="switchGuide('intro',this)">🚀 Por onde começar</button>
-      <button class="guide-menu-btn" onclick="switchGuide('eta',this)">💧 O que é uma ETA</button>
-      <button class="guide-menu-btn" onclick="switchGuide('or',this)">🔬 Osmose Reversa</button>
-      <button class="guide-menu-btn" onclick="switchGuide('rotina',this)">📅 Rotina do Turno</button>
-      <button class="guide-menu-btn" onclick="switchGuide('alarmes',this)">🚨 Alarmes e Ações</button>
-      <button class="guide-menu-btn" onclick="switchGuide('seguranca',this)">🦺 Segurança</button>
-      <button class="guide-menu-btn" onclick="switchGuide('glossario',this)">📚 Glossário</button>
-      <button class="guide-menu-btn" onclick="switchGuide('notas',this)">📝 Notas Livres</button>
+      <button class="guide-menu-btn active" onclick="switchGuide('intro', this)">🚀 Por onde começar</button>
+      <button class="guide-menu-btn" onclick="switchGuide('eta', this)">💧 O que é uma ETA</button>
+      <button class="guide-menu-btn" onclick="switchGuide('or', this)">🔬 Osmose Reversa</button>
+      <button class="guide-menu-btn" onclick="switchGuide('rotina', this)">📅 Rotina do Turno</button>
+      <button class="guide-menu-btn" onclick="switchGuide('alarmes', this)">🚨 Alarmes e Ações</button>
+      <button class="guide-menu-btn" onclick="switchGuide('seguranca', this)">🦺 Segurança</button>
+      <button class="guide-menu-btn" onclick="switchGuide('glossario', this)">📚 Glossário</button>
     </div>
     <div class="guide-content">
       <div id="guide-intro" class="guide-panel active">
         <h3>Por onde começar</h3>
-        <p class="guide-intro" contenteditable="false">Bem-vindo à ETAC! Este guia foi feito para você, operador que está iniciando. Leia com calma, observe o processo na prática e sempre tire dúvidas com o supervisor.</p>
-        <div class="guide-block"><h4>✅ Primeiros passos (Semana 1)</h4><ul>
-          <li contenteditable="false">Conheça o layout físico da estação — saiba onde ficam as bombas, filtros e painel de controle</li>
-          <li contenteditable="false">Acompanhe o operador experiente em pelo menos 3 turnos antes de operar sozinho</li>
-          <li contenteditable="false">Leia o fluxo de processo e entenda a ordem das etapas</li>
-          <li contenteditable="false">Aprenda a ler os manômetros, medidores de vazão e instrumentos de qualidade</li>
-          <li contenteditable="false">Identifique todas as válvulas principais e saiba para que servem</li>
-        </ul></div>
-        <div class="guide-block"><h4>📌 Regras de ouro do operador</h4><ul>
-          <li contenteditable="false"><strong>Sempre registre</strong> — se não foi registrado, não aconteceu</li>
-          <li contenteditable="false"><strong>Duvide, não chute</strong> — em caso de dúvida, chame o supervisor</li>
-          <li contenteditable="false"><strong>Nunca feche/abra válvulas rapidamente</strong> — golpe de aríete pode danificar membranas</li>
-          <li contenteditable="false"><strong>Mantenha o ambiente limpo</strong> — vazamentos pequenos viram grandes problemas</li>
-          <li contenteditable="false"><strong>EPI sempre</strong> — produtos químicos causam queimaduras e irritações graves</li>
-        </ul></div>
-        <div class="tip-block"><span>💡</span><span contenteditable="false">A Osmose Reversa é o coração da estação. Cuide bem das membranas: nunca opere o sistema OR sem verificar os parâmetros de alimentação.</span></div>
+        <p class="guide-intro">Bem-vindo à ETAC! Este guia foi feito para você, operador que está iniciando. Não precisa saber tudo de uma vez — leia com calma, observe o processo na prática e sempre tire dúvidas com o supervisor.</p>
+        <div class="guide-block">
+          <h4>✅ Primeiros passos (Semana 1)</h4>
+          <ul>
+            <li>Conheça o layout físico da estação — saiba onde ficam as bombas, filtros e painel de controle</li>
+            <li>Acompanhe o operador experiente em pelo menos 3 turnos antes de operar sozinho</li>
+            <li>Leia o fluxo de processo (aba "Processo") e entenda a ordem das etapas</li>
+            <li>Aprenda a ler os manômetros, medidores de vazão e instrumentos de qualidade</li>
+            <li>Identifique todas as válvulas principais e saiba para que servem</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>📌 Regras de ouro do operador</h4>
+          <ul>
+            <li><strong>Sempre registre</strong> — se não foi registrado, não aconteceu</li>
+            <li><strong>Duvide, não chute</strong> — em caso de dúvida, chame o supervisor</li>
+            <li><strong>Nunca feche/abra válvulas rapidamente</strong> — golpe de aríete pode danificar membranas</li>
+            <li><strong>Mantenha o ambiente limpo</strong> — vazamentos pequenos viram grandes problemas</li>
+            <li><strong>EPI sempre</strong> — produtos químicos causam queimaduras e irritações graves</li>
+          </ul>
+        </div>
+        <div class="tip-block"><span>💡</span><span>A Osmose Reversa é o coração da estação. Cuide bem das membranas: elas são caras e sensíveis a operações erradas. Nunca opere o sistema OR sem verificar os parâmetros de alimentação.</span></div>
       </div>
       <div id="guide-eta" class="guide-panel">
         <h3>O que é uma ETA?</h3>
-        <p class="guide-intro" contenteditable="false">ETA = Estação de Tratamento de Água. É onde a água bruta é transformada em água segura para uso industrial ou consumo humano, passando por várias etapas de tratamento.</p>
-        <div class="guide-block"><h4>💧 Por que tratar a água?</h4><ul>
-          <li contenteditable="false">Água bruta contém sólidos, bactérias, vírus, metais e compostos orgânicos</li>
-          <li contenteditable="false">Sem tratamento, causa doenças, danifica equipamentos e inviabiliza processos industriais</li>
-          <li contenteditable="false">A qualidade da água tratada precisa estar dentro dos padrões da <strong>Portaria 888/2021 (MS)</strong></li>
-        </ul></div>
-        <div class="guide-block"><h4>⚙️ Principais equipamentos</h4><ul>
-          <li contenteditable="false"><strong>Bombas de captação e recalque</strong> — movem a água entre as etapas</li>
-          <li contenteditable="false"><strong>Dosadores químicos</strong> — adicionam coagulante, cloro, antiincrustante</li>
-          <li contenteditable="false"><strong>Filtros de areia/carvão</strong> — removem partículas finas</li>
-          <li contenteditable="false"><strong>Sistema de Osmose Reversa (OR1 e OR2)</strong> — membranas que purificam a água</li>
-          <li contenteditable="false"><strong>Painel de controle / SCADA</strong> — monitoramento em tempo real</li>
-        </ul></div>
+        <p class="guide-intro">ETA = Estação de Tratamento de Água. É onde a água bruta (de rios, lagos ou poços) é transformada em água segura para uso industrial ou consumo humano, passando por várias etapas de tratamento.</p>
+        <div class="guide-block">
+          <h4>💧 Por que tratar a água?</h4>
+          <ul>
+            <li>Água bruta contém sólidos, bactérias, vírus, metais e compostos orgânicos</li>
+            <li>Sem tratamento, causa doenças, danifica equipamentos e inviabiliza processos industriais</li>
+            <li>A qualidade da água tratada precisa estar dentro dos padrões da <strong>Portaria 888/2021 (MS)</strong> para consumo</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>⚙️ Principais equipamentos que você vai operar</h4>
+          <ul>
+            <li><strong>Bombas de captação e recalque</strong> — movem a água entre as etapas</li>
+            <li><strong>Dosadores químicos</strong> — adicionam coagulante, cloro, antiincrustante</li>
+            <li><strong>Filtros de areia/carvão</strong> — removem partículas finas</li>
+            <li><strong>Sistema de Osmose Reversa</strong> — membranas que purificam a água</li>
+            <li><strong>Painel de controle / SCADA</strong> — monitoramento em tempo real</li>
+            <li><strong>Analisadores online</strong> — pH, condutividade, turbidez, cloro</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>📊 Parâmetros que você precisa conhecer de cor</h4>
+          <ul>
+            <li><strong>pH</strong> — mede acidez/alcalinidade. Normal na saída: 6,5 a 8,5</li>
+            <li><strong>Turbidez (NTU)</strong> — mede partículas em suspensão. Meta: &lt; 1,0 NTU</li>
+            <li><strong>Cloro residual livre (mg/L)</strong> — garante desinfecção. Meta: 0,2 a 2,0</li>
+            <li><strong>Condutividade (µS/cm)</strong> — indica sais dissolvidos. Permeado OR: &lt; 200</li>
+            <li><strong>Vazão (m³/h)</strong> — volume de água processado por hora</li>
+            <li><strong>Pressão (bar/mca)</strong> — força exercida pelo fluido nas tubulações</li>
+          </ul>
+        </div>
       </div>
       <div id="guide-or" class="guide-panel">
         <h3>Osmose Reversa</h3>
-        <p class="guide-intro" contenteditable="false">A Osmose Reversa usa alta pressão para forçar a água a passar por membranas que retêm sais, bactérias, vírus e metais pesados. É a etapa mais eficiente e também a mais delicada. A estação possui duas unidades de OR (OR1 e OR2).</p>
-        <div class="guide-block"><h4>🔬 Como funciona</h4><ul>
-          <li contenteditable="false">Bomba de alta pressão pressuriza a água para 10–15 bar</li>
-          <li contenteditable="false">A água passa pela membrana: a parte que atravessa é o <strong>permeado</strong> (água limpa)</li>
-          <li contenteditable="false">A parte que não atravessa é o <strong>concentrado/rejeito</strong></li>
-          <li contenteditable="false">Taxa de recuperação típica: 70–80%</li>
-        </ul></div>
-        <div class="guide-block"><h4>🎯 O que monitorar na OR</h4><ul>
-          <li contenteditable="false"><strong>Pressão de alimentação</strong> — dentro do range especificado pelo fabricante</li>
-          <li contenteditable="false"><strong>Condutividade OR1 e OR2</strong> — aumento indica falha na membrana</li>
-          <li contenteditable="false"><strong>SDI da alimentação</strong> — deve ficar abaixo de 5</li>
-          <li contenteditable="false"><strong>Taxa de rejeição</strong> — queda indica membrana comprometida</li>
-          <li contenteditable="false"><strong>TLM (Teste de Limpeza de Membrana)</strong> — registrar resultado conforme procedimento</li>
-          <li contenteditable="false"><strong>Regeneração</strong> — registrar se foi realizada no turno</li>
-        </ul></div>
-        <div class="warning-block"><h4>⛔ O que NUNCA fazer na OR</h4><ul>
-          <li contenteditable="false">Operar com cloro livre na alimentação (destrói as membranas poliamida)</li>
-          <li contenteditable="false">Dar partida sem verificar SDI e parâmetros de pré-tratamento</li>
-          <li contenteditable="false">Fechar válvulas bruscamente com o sistema pressurizado</li>
-          <li contenteditable="false">Deixar o sistema parado por mais de 24h sem procedimento de preservação</li>
-        </ul></div>
+        <p class="guide-intro">A Osmose Reversa (OR) usa alta pressão para forçar a água a passar por membranas que retêm praticamente tudo — sal, bactérias, vírus, metais pesados. É a etapa mais eficiente e também a mais delicada.</p>
+        <div class="guide-block">
+          <h4>🔬 Como funciona</h4>
+          <ul>
+            <li>Bomba de alta pressão pressuriza a água para 10–15 bar (tipicamente)</li>
+            <li>A água passa pela membrana: a parte que atravessa é o <strong>permeado</strong> (água limpa)</li>
+            <li>A parte que não atravessa é o <strong>concentrado/rejeito</strong> (descartado ou aproveitado)</li>
+            <li>Taxa de recuperação típica: 70–80% (para cada 100 L de entrada, 70–80 L viram permeado)</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>🎯 O que monitorar na OR</h4>
+          <ul>
+            <li><strong>Pressão de alimentação</strong> — dentro do range especificado pelo fabricante</li>
+            <li><strong>Pressão diferencial</strong> — aumento indica colmatação das membranas</li>
+            <li><strong>Condutividade do permeado</strong> — aumento indica falha na membrana</li>
+            <li><strong>Taxa de rejeição</strong> — queda indica membrana comprometida</li>
+            <li><strong>SDI da alimentação</strong> — deve ficar abaixo de 5 para proteger as membranas</li>
+            <li><strong>Temperatura</strong> — afeta a permeabilidade; registrar variações bruscas</li>
+          </ul>
+        </div>
+        <div class="warning-block">
+          <h4>⛔ O que NUNCA fazer na OR</h4>
+          <ul>
+            <li>Operar com cloro livre na alimentação (destrói as membranas poliamida)</li>
+            <li>Dar partida sem verificar SDI e parâmetros de pré-tratamento</li>
+            <li>Fechar válvulas bruscamente com o sistema pressurizado</li>
+            <li>Deixar o sistema parado por mais de 24h sem procedimento de preservação</li>
+            <li>Ignorar alarme de pressão diferencial alta</li>
+          </ul>
+        </div>
+        <div class="tip-block"><span>💡</span><span>Se a condutividade do permeado subir de repente, pode ser ruptura de membrana. Pare o sistema, avise o supervisor imediatamente e registre a hora e os valores.</span></div>
       </div>
       <div id="guide-rotina" class="guide-panel">
         <h3>Rotina do Turno</h3>
-        <p class="guide-intro" contenteditable="false">A consistência é o que faz um bom operador. Seguir a rotina garante que nada passe despercebido e que o próximo turno receba a estação em boas condições.</p>
-        <div class="guide-block"><h4>🌅 Início do Turno (primeiros 30 min)</h4><ul>
-          <li contenteditable="false">Ler o relatório do turno anterior — verificar ocorrências e pendências</li>
-          <li contenteditable="false">Fazer ronda visual: verificar vazamentos, ruídos anormais, alarmes ativos</li>
-          <li contenteditable="false">Conferir nível dos reservatórios e tanques de produtos químicos</li>
-          <li contenteditable="false">Verificar os parâmetros do painel/SCADA e comparar com valores anteriores</li>
-          <li contenteditable="false">Coletar e analisar as primeiras amostras (pH, turbidez, cloro, condutividade OR1 e OR2)</li>
-        </ul></div>
-        <div class="guide-block"><h4>🔄 Durante o Turno</h4><ul>
-          <li contenteditable="false">Registrar vazões e pressões nos pontos definidos</li>
-          <li contenteditable="false">Coletar amostras de qualidade e registrar no relatório</li>
-          <li contenteditable="false">Verificar dosagem de produtos químicos</li>
-          <li contenteditable="false">Monitorar parâmetros da OR1 e OR2: pressões, condutividade, SDI</li>
-          <li contenteditable="false">Realizar TLM conforme programação; registrar se houve regeneração</li>
-        </ul></div>
-        <div class="guide-block"><h4>🌙 Final do Turno</h4><ul>
-          <li contenteditable="false">Completar todos os campos do relatório diário</li>
-          <li contenteditable="false">Registrar produtos dosados no dia com quantidades</li>
-          <li contenteditable="false">Verificar nível de reagentes e solicitar reposição se necessário</li>
-          <li contenteditable="false">Fazer ronda final e confirmar que tudo está em ordem</li>
-          <li contenteditable="false">Passar o turno ao próximo operador verbalmente</li>
-        </ul></div>
+        <p class="guide-intro">A consistência é o que faz um bom operador. Seguir a rotina garante que nada passe despercebido e que o próximo turno receba a estação em boas condições.</p>
+        <div class="guide-block">
+          <h4>🌅 Início do Turno (primeiros 30 min)</h4>
+          <ul>
+            <li>Ler o relatório do turno anterior — verificar ocorrências e pendências</li>
+            <li>Fazer ronda visual: verificar vazamentos, ruídos anormais, alarmes ativos</li>
+            <li>Conferir nível dos reservatórios e tanques de produtos químicos</li>
+            <li>Verificar os parâmetros do painel/SCADA e comparar com os valores do turno anterior</li>
+            <li>Coletar e analisar as primeiras amostras do turno (pH, turbidez, cloro, condutividade)</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>🔄 Durante o Turno (a cada 2-4 horas)</h4>
+          <ul>
+            <li>Registrar vazões e pressões nos pontos definidos</li>
+            <li>Coletar amostras de qualidade e registrar no relatório</li>
+            <li>Verificar dosagem de produtos químicos (estoque e funcionamento dos dosadores)</li>
+            <li>Conferir funcionamento dos filtros — retrolavagem se necessário</li>
+            <li>Monitorar parâmetros da OR: pressões, condutividade, temperatura</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>🌙 Final do Turno (últimos 30 min)</h4>
+          <ul>
+            <li>Completar todos os campos do relatório diário</li>
+            <li>Registrar todas as ocorrências e ações tomadas</li>
+            <li>Verificar nível de reagentes e solicitar reposição se necessário</li>
+            <li>Fazer ronda final e confirmar que tudo está em ordem</li>
+            <li>Passar o turno ao próximo operador, comentando verbalmente as ocorrências</li>
+          </ul>
+        </div>
       </div>
       <div id="guide-alarmes" class="guide-panel">
         <h3>Alarmes e Ações</h3>
-        <p class="guide-intro" contenteditable="false">Alarmes são avisos do sistema de que algo precisa de atenção. Nunca ignore um alarme — entenda o que está acontecendo antes de silenciá-lo.</p>
-        <div class="guide-block"><h4>🟡 Alarmes de Atenção — agir dentro de 30 min</h4><ul>
-          <li contenteditable="false"><strong>pH fora da faixa ideal</strong> → Verificar dosagem de corretor de pH; ajustar dosador</li>
-          <li contenteditable="false"><strong>Turbidez elevada no pós-filtro</strong> → Verificar floculação; considerar retrolavagem</li>
-          <li contenteditable="false"><strong>Pressão diferencial OR aumentando</strong> → Verificar SDI; programar CIP</li>
-          <li contenteditable="false"><strong>Condutividade OR1 ou OR2 aumentando</strong> → Verificar membranas</li>
-          <li contenteditable="false"><strong>Nível de reagente químico baixo</strong> → Solicitar reposição imediata</li>
-        </ul></div>
-        <div class="warning-block"><h4>🔴 Alarmes Críticos — agir imediatamente</h4><ul>
-          <li contenteditable="false"><strong>Parada de bomba principal</strong> → Verificar disjuntor; acionar reserva</li>
-          <li contenteditable="false"><strong>Condutividade do permeado muito alta</strong> → Parar OR; suspeita de ruptura de membrana</li>
-          <li contenteditable="false"><strong>Cloro residual zero na saída</strong> → Verificar dosador; não liberar água</li>
-          <li contenteditable="false"><strong>Vazamento detectado</strong> → Isolar o trecho; acionar manutenção</li>
-        </ul></div>
-        <div class="tip-block"><span>💡</span><span contenteditable="false">Toda ação em resposta a um alarme deve ser registrada no relatório: hora, o que foi feito e quando o sistema voltou ao normal.</span></div>
+        <p class="guide-intro">Alarmes são avisos do sistema de que algo precisa de atenção. Nunca ignore um alarme — entenda o que está acontecendo antes de silenciá-lo.</p>
+        <div class="guide-block">
+          <h4>🟡 Alarmes de Atenção — agir dentro de 30 min</h4>
+          <ul>
+            <li><strong>pH fora da faixa ideal</strong> → Verificar dosagem de corretor de pH; ajustar dosador</li>
+            <li><strong>Turbidez elevada no pós-filtro</strong> → Verificar floculação; considerar retrolavagem do filtro</li>
+            <li><strong>Nível de reservatório baixo (&lt;30%)</strong> → Aumentar vazão de produção; verificar bomba</li>
+            <li><strong>Pressão diferencial OR aumentando</strong> → Verificar SDI; programar limpeza química (CIP)</li>
+            <li><strong>Nível de reagente químico baixo</strong> → Solicitar reposição imediata ao almoxarifado</li>
+          </ul>
+        </div>
+        <div class="warning-block">
+          <h4>🔴 Alarmes Críticos — agir imediatamente e chamar supervisor</h4>
+          <ul>
+            <li><strong>Parada de bomba principal</strong> → Verificar disjuntor; tentar religamento; acionar reserva</li>
+            <li><strong>Pressão OR fora do limite</strong> → Parar sistema; verificar válvulas e bomba de alta pressão</li>
+            <li><strong>Condutividade do permeado muito alta</strong> → Parar OR; suspeita de ruptura de membrana</li>
+            <li><strong>Cloro residual zero na saída</strong> → Verificar dosador e estoque de cloro; não liberar água</li>
+            <li><strong>Vazamento detectado</strong> → Isolar o trecho; fechar válvulas de bloqueio; acionar manutenção</li>
+            <li><strong>Falta de energia</strong> → Verificar gerador de emergência; verificar UPS do painel</li>
+          </ul>
+        </div>
+        <div class="tip-block"><span>💡</span><span>Toda ação tomada em resposta a um alarme deve ser registrada: hora do alarme, o que foi feito e quando o sistema voltou ao normal. Isso ajuda a identificar problemas recorrentes.</span></div>
       </div>
       <div id="guide-seguranca" class="guide-panel">
         <h3>Segurança Operacional</h3>
-        <p class="guide-intro" contenteditable="false">Estação de tratamento envolve produtos químicos perigosos, equipamentos rotativos e sistemas pressurizados. Segurança não é opcional — é parte do trabalho.</p>
-        <div class="guide-block"><h4>🦺 EPIs obrigatórios por atividade</h4><ul>
-          <li contenteditable="false"><strong>Manuseio de cloro/coagulante</strong> → Máscara PFF2, óculos, luvas nitrila, avental</li>
-          <li contenteditable="false"><strong>Ronda em área de bombas</strong> → Protetor auricular, capacete, botina com bico de aço</li>
-          <li contenteditable="false"><strong>Coleta de amostras</strong> → Luvas de látex, óculos de proteção</li>
-          <li contenteditable="false"><strong>Espaços confinados</strong> → Detector de gases + equipe de apoio (NUNCA entre sozinho)</li>
-        </ul></div>
-        <div class="warning-block"><h4>⚠️ Riscos específicos desta estação</h4><ul>
-          <li contenteditable="false">Hipoclorito de sódio é corrosivo — nunca misture com ácidos (gera cloro gasoso)</li>
-          <li contenteditable="false">Sistemas pressurizados: nunca abra conexões sem despressurizar antes</li>
-          <li contenteditable="false">Produtos químicos armazenados em local ventilado, longe de fontes de calor</li>
-        </ul></div>
-        <div class="guide-block"><h4>📞 Em caso de emergência</h4><ul>
-          <li contenteditable="false">Acionar o supervisor imediatamente — sempre</li>
-          <li contenteditable="false">Primeiros socorros: kit de emergência fica em _____________</li>
-          <li contenteditable="false">Chuveiro de emergência / lava-olhos: fica em _____________</li>
-          <li contenteditable="false">SAMU: 192 | Bombeiros: 193 | Defesa Civil: 199</li>
-        </ul></div>
+        <p class="guide-intro">Estação de tratamento envolve produtos químicos perigosos, equipamentos rotativos e sistemas pressurizados. Segurança não é opcional — é parte do trabalho.</p>
+        <div class="guide-block">
+          <h4>🦺 EPIs obrigatórios por atividade</h4>
+          <ul>
+            <li><strong>Manuseio de cloro/coagulante</strong> → Máscara PFF2, óculos de proteção, luvas nitrila, avental</li>
+            <li><strong>Ronda em área de bombas</strong> → Protetor auricular, capacete, botina com bico de aço</li>
+            <li><strong>Coleta de amostras</strong> → Luvas de látex, óculos de proteção</li>
+            <li><strong>Trabalho em altura</strong> → Cinto de segurança + talabarte (telhados, reservatórios)</li>
+            <li><strong>Espaços confinados</strong> → Detector de gases + equipe de apoio (NUNCA entre sozinho)</li>
+          </ul>
+        </div>
+        <div class="warning-block">
+          <h4>⚠️ Riscos específicos desta estação</h4>
+          <ul>
+            <li>Hipoclorito de sódio é corrosivo — nunca misture com ácidos (gera cloro gasoso)</li>
+            <li>Sistemas pressurizados: nunca abra conexões sem despressurizar antes</li>
+            <li>Produtos químicos armazenados em local ventilado, longe de fontes de calor</li>
+            <li>Vazamentos de produtos químicos: isolar área, usar EPI completo para limpar</li>
+            <li>Nunca trabalhe sozinho em áreas confinadas como poços e caixas de passagem</li>
+          </ul>
+        </div>
+        <div class="guide-block">
+          <h4>📞 Em caso de emergência</h4>
+          <ul>
+            <li>Acionar o supervisor imediatamente — sempre</li>
+            <li>Primeiros socorros: kit de emergência fica em _____________</li>
+            <li>Chuveiro de emergência / lava-olhos: fica em _____________</li>
+            <li>SAMU: 192 | Bombeiros: 193 | Defesa Civil: 199</li>
+          </ul>
+        </div>
       </div>
       <div id="guide-glossario" class="guide-panel">
         <h3>Glossário Técnico</h3>
-        <p class="guide-intro" contenteditable="false">Termos que você vai ouvir e usar no dia a dia.</p>
+        <p class="guide-intro">Termos que você vai ouvir e usar no dia a dia. Sem enrolação — definições diretas ao ponto.</p>
         <div class="glossary-grid">
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">SDI</div><div class="glossary-def" contenteditable="false">Índice de Densidade de Sólidos. Mede o potencial de colmatação das membranas OR. Deve ser &lt; 5.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">TLM</div><div class="glossary-def" contenteditable="false">Teste de Limpeza de Membrana. Procedimento para avaliar a necessidade de limpeza química (CIP).</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Permeado</div><div class="glossary-def" contenteditable="false">Água que atravessou a membrana de OR. É o produto final tratado e purificado.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Concentrado / Rejeito</div><div class="glossary-def" contenteditable="false">Fração da água que não passou pela membrana — contém sais e contaminantes concentrados.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">CIP</div><div class="glossary-def" contenteditable="false">Clean In Place — limpeza química das membranas sem desmontá-las. Restaura a performance.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Retrolavagem</div><div class="glossary-def" contenteditable="false">Lavagem reversa dos filtros de areia/carvão para remover sólidos acumulados no leito.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Condutividade (µS/cm)</div><div class="glossary-def" contenteditable="false">Indica a quantidade de sais dissolvidos. Alta condutividade = muitos minerais na água.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Pressão Diferencial (ΔP)</div><div class="glossary-def" contenteditable="false">Diferença de pressão entre entrada e saída de um filtro ou membrana. Aumento indica colmatação.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">Regeneração</div><div class="glossary-def" contenteditable="false">Processo de limpeza ou restauração das resinas ou membranas do sistema de tratamento.</div></div>
-          <div class="glossary-item"><div class="glossary-term" contenteditable="false">mca</div><div class="glossary-def" contenteditable="false">Metros de coluna d'água — unidade de pressão. 1 bar ≈ 10 mca.</div></div>
-        </div>
-      </div>
-      <!-- NOTAS LIVRES -->
-      <div id="guide-notas" class="guide-panel">
-        <h3>📝 Notas Livres</h3>
-        <p class="guide-intro" contenteditable="false">Espaço livre para adicionar procedimentos, instruções específicas, fotos de equipamentos, documentos ou qualquer informação relevante para a operação.</p>
-        <div style="background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:20px;min-height:200px;">
-          <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-            <button class="btn-add-img" onclick="adicionarImagemGuia()">📷 Inserir foto</button>
-            <button class="btn-add-img" onclick="adicionarBlocoTexto()">📄 Adicionar bloco de texto</button>
-          </div>
-          <div id="notas-content" style="font-size:13px;color:var(--muted);line-height:1.7;outline:none;min-height:100px;" contenteditable="false">
-            Ative o modo de edição e clique aqui para adicionar notas, procedimentos ou informações.
-          </div>
-          <input type="file" id="file-input-guia" accept="image/*" multiple style="display:none" onchange="handleFilesGuia(event)">
+          <div class="glossary-item"><div class="glossary-term">SDI</div><div class="glossary-def">Índice de Densidade de Sólidos. Mede o potencial de colmatação das membranas OR. Deve ser &lt; 5.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Permeado</div><div class="glossary-def">Água que atravessou a membrana de OR. É o produto final tratado e purificado.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Concentrado / Rejeito</div><div class="glossary-def">Fração da água que não passou pela membrana — contém sais e contaminantes concentrados.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Colmatação</div><div class="glossary-def">Entupimento gradual de membranas ou filtros por depósito de sólidos, biofouling ou incrustação.</div></div>
+          <div class="glossary-item"><div class="glossary-term">CIP</div><div class="glossary-def">Clean In Place — limpeza química das membranas sem desmontá-las. Restaura a performance.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Retrolavagem</div><div class="glossary-def">Lavagem reversa dos filtros de areia/carvão para remover sólidos acumulados no leito.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Turbidez (NTU)</div><div class="glossary-def">Medida da clareza da água. Quanto maior o NTU, mais turva é a água.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Condutividade (µS/cm)</div><div class="glossary-def">Indica a quantidade de sais dissolvidos. Alta condutividade = muitos minerais na água.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Taxa de Recuperação</div><div class="glossary-def">% da água de alimentação convertida em permeado. Exemplo: 75% = 75 L de permeado para 100 L de entrada.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Coagulação</div><div class="glossary-def">Adição de produto químico (coagulante) para desestabilizar partículas em suspensão e agrupá-las.</div></div>
+          <div class="glossary-item"><div class="glossary-term">mca</div><div class="glossary-def">Metros de coluna d'água — unidade de pressão. 1 bar ≈ 10 mca.</div></div>
+          <div class="glossary-item"><div class="glossary-term">Pressão Diferencial (ΔP)</div><div class="glossary-def">Diferença de pressão entre entrada e saída de um filtro ou membrana. Aumento indica colmatação.</div></div>
         </div>
       </div>
     </div>
@@ -522,137 +523,59 @@
 </div>
 
 <script>
-  // LOGIN
-  function verificarSenha() {
-    const senha = document.getElementById('senha-input').value;
-    if (senha === '1234') {
-      document.getElementById('login-overlay').style.display = 'none';
-      sessionStorage.setItem('etac_auth', '1');
-    } else {
-      document.getElementById('login-error').style.display = 'block';
-      document.getElementById('senha-input').value = '';
-      document.getElementById('senha-input').focus();
-    }
-  }
-  // Verificar sessão
-  if (sessionStorage.getItem('etac_auth') === '1') {
-    document.getElementById('login-overlay').style.display = 'none';
-  }
-  document.getElementById('senha-input').addEventListener('keydown', e => { if(e.key==='Enter') verificarSenha(); });
-
-  // TABS
   function switchTab(id, btn) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + id).classList.add('active');
-    if(btn) btn.classList.add('active');
+    btn.classList.add('active');
   }
 
   function switchGuide(id, btn) {
     document.querySelectorAll('.guide-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.guide-menu-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('guide-' + id).classList.add('active');
-    if(btn) btn.classList.add('active');
+    btn.classList.add('active');
   }
 
-  // EDIT MODE
-  let editMode = false;
-  const EDIT_SEL = [
-    '.step-name','.step-desc','.alert-box span:last-child','.param-name','.param-value',
-    '.guide-intro','.guide-block ul li','.warning-block ul li','.tip-block span:last-child',
-    '.glossary-term','.glossary-def','h3','h4','#area-livre-content','#notas-content'
+  const EDIT_SELECTORS = [
+    'h1','h2','h3','h4','.section-label','.section-title','.section-desc',
+    '.step-tag','.step-name','.step-desc','.alert-box span:last-child',
+    '.param-name','.param-value','.param-unit','.card-title',
+    '.guide-intro','.guide-block ul li','.warning-block ul li',
+    '.tip-block span:last-child','.glossary-term','.glossary-def',
+    '.logo-mark','thead th','tbody td:first-child',
   ].join(',');
+
+  let editMode = false;
+  let editableEls = [];
 
   function toggleEditMode() {
     editMode = !editMode;
     const btn = document.getElementById('edit-toggle-btn');
+    const bar = document.getElementById('edit-bar');
     if (editMode) {
-      document.querySelectorAll(EDIT_SEL).forEach(el => {
-        el.setAttribute('contenteditable','true');
-        el.setAttribute('data-editable','true');
-      });
+      editableEls = Array.from(document.querySelectorAll(EDIT_SELECTORS));
+      editableEls.forEach(el => { el.setAttribute('contenteditable','true'); el.setAttribute('data-editable','true'); });
       document.body.classList.add('edit-active');
-      btn.textContent = '✅ Sair edição';
+      btn.textContent = '✅ Sair do modo edição';
       btn.style.background = 'var(--accent)'; btn.style.color = 'white';
-      document.querySelector('.edit-hint').style.display = 'inline';
+      bar.querySelector('.edit-hint').style.display = 'inline';
     } else {
-      document.querySelectorAll('[data-editable]').forEach(el => {
-        el.removeAttribute('contenteditable'); el.removeAttribute('data-editable');
-      });
+      editableEls.forEach(el => { el.removeAttribute('contenteditable'); el.removeAttribute('data-editable'); });
+      editableEls = [];
       document.body.classList.remove('edit-active');
       btn.textContent = '✏️ Ativar edição';
       btn.style.background = 'transparent'; btn.style.color = 'var(--muted)';
-      document.querySelector('.edit-hint').style.display = 'none';
+      bar.querySelector('.edit-hint').style.display = 'none';
     }
   }
 
-  // INSERIR IMAGEM
-  function adicionarImagem() {
-    if (!editMode) { alert('Ative o modo de edição primeiro!'); return; }
-    document.getElementById('file-input').click();
-  }
-  function handleFiles(e) {
-    const area = document.getElementById('area-livre-content');
-    Array.from(e.target.files).forEach(file => {
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = ev => {
-          const img = document.createElement('img');
-          img.src = ev.target.result;
-          img.style.cssText = 'max-width:100%;border-radius:8px;margin:8px 0;display:block;';
-          area.appendChild(img);
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-  }
-  function adicionarTexto() {
-    if (!editMode) { alert('Ative o modo de edição primeiro!'); return; }
-    const area = document.getElementById('area-livre-content');
-    const p = document.createElement('p');
-    p.contentEditable = 'true';
-    p.style.cssText = 'margin:8px 0;padding:8px;background:var(--surface2);border-radius:6px;font-size:13px;color:var(--text);outline:none;';
-    p.textContent = 'Clique aqui para escrever...';
-    area.appendChild(p);
-    p.focus();
-  }
-
-  // NOTAS GUIA
-  function adicionarImagemGuia() {
-    if (!editMode) { alert('Ative o modo de edição primeiro!'); return; }
-    document.getElementById('file-input-guia').click();
-  }
-  function handleFilesGuia(e) {
-    const area = document.getElementById('notas-content');
-    Array.from(e.target.files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const img = document.createElement('img');
-        img.src = ev.target.result;
-        img.style.cssText = 'max-width:100%;border-radius:8px;margin:8px 0;display:block;';
-        area.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-  function adicionarBlocoTexto() {
-    if (!editMode) { alert('Ative o modo de edição primeiro!'); return; }
-    const area = document.getElementById('notas-content');
-    const div = document.createElement('div');
-    div.contentEditable = 'true';
-    div.style.cssText = 'margin:10px 0;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;font-size:13px;color:var(--text);outline:none;min-height:60px;';
-    div.textContent = 'Escreva aqui...';
-    area.appendChild(div);
-    div.focus();
-  }
-
-  // BAIXAR HTML
   function baixarHTML() {
     const clone = document.documentElement.cloneNode(true);
     clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
     clone.querySelectorAll('[data-editable]').forEach(el => el.removeAttribute('data-editable'));
     const html = '<!DOCTYPE html>\n' + clone.outerHTML;
-    const blob = new Blob([html], {type:'text/html'});
+    const blob = new Blob([html], {type: 'text/html'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'ETAC-Portal-Operacional.html';
@@ -660,5 +583,6 @@
     URL.revokeObjectURL(a.href);
   }
 </script>
+
 </body>
 </html>
