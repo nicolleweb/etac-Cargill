@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETAC — Sistema Cargill</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f2f4;--surface:#fff;--surface2:#f4f6f8;--border:#dde1e7;--accent:#00703C;--accent-dark:#005a30;--accent-light:#e6f4ed;--accent3:#d97706;--danger:#dc2626;--text:#1a1f2e;--muted:#6b7280;--mono:'DM Mono',monospace;--sans:'Sora',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;}
+
+/* LOGIN */
+#login-overlay{position:fixed;inset:0;background:var(--accent);z-index:99999;display:flex;align-items:center;justify-content:center;}
+.login-box{background:white;border-radius:20px;padding:40px 36px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.login-title{font-size:20px;font-weight:700;margin-bottom:4px;}
+.login-sub{font-size:12px;color:var(--muted);margin-bottom:24px;}
+.login-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-size:24px;outline:none;text-align:center;letter-spacing:6px;margin-bottom:12px;font-family:var(--sans);}
+.login-input:focus{border-color:var(--accent);}
+.login-btn{width:100%;background:var(--accent);color:white;border:none;border-radius:10px;padding:13px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;}
+.login-error{color:var(--danger);font-size:12px;margin-top:8px;display:none;}
+
+/* HEADER */
+header{background:var(--accent);border-bottom:4px solid var(--accent-dark);padding:0 28px;min-height:60px;display:flex;align-items:stretch;}
+.logo{display:flex;align-items:center;gap:10px;padding-right:20px;margin-right:20px;border-right:1px solid rgba(255,255,255,0.2);}
+.logo-icon{width:34px;height:34px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.logo-text{font-weight:700;font-size:15px;color:white;}
+.header-info{display:flex;flex-direction:column;justify-content:center;}
+.header-info h1{font-size:13px;font-weight:700;color:white;}
+.header-info span{font-size:10px;color:rgba(255,255,255,0.6);font-family:var(--mono);letter-spacing:1px;text-transform:uppercase;}
+.tabs{margin-left:auto;display:flex;align-items:stretch;}
+.tab{background:none;border:none;color:rgba(255,255,255,0.7);font-family:var(--sans);font-size:13px;font-weight:600;padding:0 20px;cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+.tab:hover{color:white;background:rgba(255,255,255,0.08);}
+.tab.active{color:white;border-bottom-color:white;background:rgba(255,255,255,0.12);}
+
+/* PAGES */
+.page{display:none;padding:28px;max-width:1100px;}
+.page.active{display:block;}
+.section-label{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.section-title{font-size:22px;font-weight:700;margin-bottom:5px;}
+.section-desc{color:var(--muted);font-size:13px;margin-bottom:22px;line-height:1.6;}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px;}
+.card-title{font-size:13px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dg{background:var(--accent)}.db{background:#2e7d52}.da{background:var(--accent3)}.dr{background:var(--danger)}
+
+/* FORM */
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;margin-bottom:12px;}
+.fg{display:flex;flex-direction:column;gap:4px;}
+.fl{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.fi{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 11px;color:var(--text);font-family:var(--sans);font-size:13px;outline:none;transition:border-color 0.2s;width:100%;}
+.fi:focus{border-color:var(--accent);}
+textarea.fi{resize:vertical;min-height:65px;line-height:1.5;}
+
+/* TABLE */
+.tw{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;}
+thead th{background:#f0f5f2;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:8px 11px;text-align:left;border-bottom:1px solid var(--border);}
+tbody td{padding:7px 9px;border-bottom:1px solid rgba(221,225,231,0.5);vertical-align:middle;}
+td input,td select{background:transparent;border:1px solid transparent;color:var(--text);font-family:var(--sans);font-size:12.5px;width:100%;padding:4px 7px;border-radius:6px;outline:none;}
+td input:focus,td select:focus{background:var(--accent-light);border-color:var(--accent);}
+td input.lim{font-size:11px;color:var(--muted);}
+
+/* ROWS */
+.or-row{display:grid;grid-template-columns:85px 1fr 120px;gap:8px;margin-bottom:8px;align-items:start;}
+.pr-row{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:7px;margin-bottom:7px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;transition:all 0.2s;}
+.bp{background:var(--accent);color:white;}.bp:hover{background:var(--accent-dark);}
+.bg{background:transparent;color:var(--muted);border:1px solid var(--border);}.bg:hover{color:var(--text);border-color:var(--text);}
+.be{background:#1d4ed8;color:white;}.be:hover{background:#1e40af;}
+.bd{background:transparent;color:var(--danger);border:1px solid rgba(220,38,38,0.3);}
+.bsm{padding:5px 10px;font-size:11px;border-radius:6px;}
+.ra{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap;}
+
+/* BANNER */
+#hbanner{display:none;background:var(--accent-light);border:1px solid rgba(0,112,60,0.3);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:12px;color:#166534;align-items:center;gap:10px;}
+#hbanner span{flex:1;}
+
+/* BOTTOM BAR */
+#bbar{position:fixed;bottom:14px;right:14px;z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:40px;padding:5px 5px 5px 12px;display:flex;align-items:center;gap:5px;box-shadow:0 6px 24px rgba(0,0,0,0.12);}
+#bbar button{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:var(--sans);font-size:11px;font-weight:600;padding:6px 11px;border-radius:30px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+#bbar button:hover{color:var(--text);border-color:var(--text);}
+#bsalvar{background:var(--accent)!important;border-color:var(--accent)!important;color:white!important;}
+#bbar span{font-size:10px;color:var(--muted);font-family:var(--mono);}
+
+/* TOAST */
+#toast{position:fixed;bottom:70px;right:14px;background:#1a1f2e;color:white;padding:11px 16px;border-radius:10px;font-size:12px;font-weight:600;display:none;z-index:9999;box-shadow:0 6px 20px rgba(0,0,0,0.25);max-width:260px;}
+#toast.s{border-left:4px solid var(--accent);}
+#toast.e{border-left:4px solid var(--danger);}
+
+/* MODAL */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:10000;align-items:center;justify-content:center;}
+.mbox{background:var(--surface);border-radius:14px;padding:22px;width:400px;max-width:92vw;box-shadow:0 16px 48px rgba(0,0,0,0.25);}
+.mbox h3{font-size:14px;font-weight:700;margin-bottom:4px;}
+.mbox p{font-size:11px;color:var(--muted);margin-bottom:14px;}
+#mlist{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.mitem{padding:10px 12px;border:1px solid var(--border);border-radius:8px;cursor:pointer;background:var(--surface2);display:flex;align-items:center;gap:8px;}
+.mitem:hover{border-color:var(--accent);background:var(--accent-light);}
+.mitem-info{flex:1;}
+.mitem-data{font-weight:700;font-size:12.5px;}
+.mitem-meta{font-size:10px;color:var(--muted);font-family:var(--mono);}
+
+/* HISTÓRICO */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-bottom:18px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px;text-align:center;}
+.stat-value{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--accent);line-height:1;margin-bottom:3px;}
+.stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;}
+.paineis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.painel-card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 16px;}
+.painel-title{font-size:12px;font-weight:700;margin-bottom:10px;}
+.hlayout{display:grid;grid-template-columns:260px 1fr;gap:16px;}
+.lista-lat{background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden;display:flex;flex-direction:column;max-height:70vh;}
+.lista-head{padding:11px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.lista-head h3{font-size:12px;font-weight:700;flex:1;}
+.badge{background:var(--accent-light);color:var(--accent);font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;}
+.fi-busca{width:100%;background:var(--surface2);border:none;border-bottom:1px solid var(--border);padding:9px 12px;font-family:var(--sans);font-size:12px;color:var(--text);outline:none;flex-shrink:0;}
+.fi-busca:focus{background:var(--accent-light);}
+.lista-scroll{overflow-y:auto;flex:1;}
+.litem{padding:10px 13px;border-bottom:1px solid rgba(221,225,231,0.5);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:8px;}
+.litem:hover{background:var(--surface2);}
+.litem.active{background:var(--accent-light);border-left:3px solid var(--accent);}
+.ldot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.ldot.m{background:#f59e0b;}.ldot.t{background:#3b82f6;}.ldot.n{background:#6366f1;}
+.ldata{font-weight:700;font-size:12px;}
+.lmeta{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:1px;}
+.empty{padding:24px 14px;text-align:center;color:var(--muted);font-size:12px;}
+.empty .icon{font-size:26px;margin-bottom:6px;}
+#viewer .vp{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:40px 28px;text-align:center;color:var(--muted);}
+.vc{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:16px 18px;margin-bottom:11px;}
+.vct{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border);padding-bottom:8px;}
+.vct .dot{width:7px;height:7px;}
+.vhg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.vf{display:flex;flex-direction:column;gap:2px;}
+.vfl{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+.vfv{font-size:12px;font-weight:600;}
+.vt{width:100%;border-collapse:collapse;font-size:11px;}
+.vt thead th{background:#f0f5f2;color:var(--muted);font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 9px;text-align:left;border-bottom:1px solid var(--border);}
+.vt tbody td{padding:6px 9px;border-bottom:1px solid rgba(221,225,231,0.5);}
+.ov{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:6px;display:grid;grid-template-columns:70px 1fr 95px;gap:7px;}
+.oh{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);}
+.od{font-size:11px;line-height:1.5;}
+.ocr{font-size:10px;font-family:var(--mono);padding:2px 6px;border-radius:20px;align-self:start;text-align:center;}
+.ocr.info{background:rgba(0,112,60,0.1);color:var(--accent);}
+.ocr.atencao{background:rgba(245,158,11,0.1);color:var(--accent3);}
+.ocr.urgente,.ocr.critico{background:rgba(220,38,38,0.1);color:var(--danger);}
+.obs-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px;font-size:12px;line-height:1.6;white-space:pre-wrap;}
+.va{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
+
+@media print{#bbar,#toast,#hbanner,#login-overlay,header,.tabs{display:none!important;}.page{padding:0;}}
+@media(max-width:700px){
+  header{padding:14px 14px 0;flex-wrap:wrap;}.tabs{margin-left:0;width:100%;overflow-x:auto;}
+  .page{padding:16px 14px;}.g3{grid-template-columns:1fr;}.or-row,.pr-row{grid-template-columns:1fr;}
+  .stats-bar{grid-template-columns:1fr 1fr;}.paineis{grid-template-columns:1fr;}
+  .hlayout{grid-template-columns:1fr;}.lista-lat{max-height:250px;}.vhg{grid-template-columns:1fr 1fr;}.ov{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="login-overlay">
+  <div class="login-box">
+    <div style="width:52px;height:52px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="white"/><circle cx="12" cy="10" r="3" fill="#00703C"/></svg>
+    </div>
+    <div class="login-title">ETAC — Cargill</div>
+    <div class="login-sub">Sistema de Relatórios · Acesso restrito</div>
+    <input class="login-input" type="password" id="si" placeholder="••••" maxlength="10">
+    <button class="login-btn" onclick="chkLogin()">🔓 Entrar</button>
+    <div class="login-error" id="le">Senha incorreta.</div>
+  </div>
+</div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="#00703C"/><circle cx="12" cy="10" r="3" fill="white"/></svg></div>
+    <span class="logo-text">Cargill</span>
+  </div>
+  <div class="header-info">
+    <h1>Sistema ETAC</h1>
+    <span>Gestão operacional da estação</span>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showPage('rel')">📋 Relatório</button>
+    <button class="tab" onclick="showPage('hist')">🗂️ Histórico</button>
+  </div>
+</header>
+
+<!-- ===== PÁGINA RELATÓRIO ===== -->
+<div class="page active" id="page-rel">
+  <p class="section-label">Registro operacional</p>
+  <h2 class="section-title">Relatório Diário</h2>
+  <p class="section-desc">Preencha os dados do turno. <strong>Salvar</strong> para registrar · <strong>Carregar</strong> para editar anterior.</p>
+  <div id="hbanner"><span id="hbt">📂 Editando: <strong></strong></span><button class="btn bg bsm" onclick="novoRel()">+ Novo</button></div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dg"></span> Identificação do Turno</div>
+    <div class="g3">
+      <div class="fg"><span class="fl">Data</span><input type="date" class="fi" id="r-data"></div>
+      <div class="fg"><span class="fl">Turno</span><select class="fi" id="r-turno"><option value="">Selecionar...</option><option>Manhã (06h–14h)</option><option>Tarde (14h–22h)</option><option>Noite (22h–06h)</option></select></div>
+      <div class="fg"><span class="fl">Operador</span><input type="text" class="fi" placeholder="Nome completo" id="r-op"></div>
+      <div class="fg"><span class="fl">Hora inicial</span><input type="time" class="fi" id="r-hora"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot db"></span> Vazões e Pressões</div>
+    <div class="tw"><table id="tv">
+      <thead><tr><th>Ponto de Medição</th><th>Valor</th><th>Situação</th></tr></thead>
+      <tbody>
+        <tr><td>Vazão de Captação</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Nível Tanque de Incêndio</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Pressão Alimentação OR1</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Pressão Alimentação OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Pressão Filtro Cartucho OR1</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Pressão Filtro Cartucho OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Vazão Permeado OR1</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Vazão Permeado OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Vazão Rejeito OR1</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Vazão Rejeito OR2</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+        <tr><td>Nível Tanque Desmi</td><td><input type="number" placeholder="0,00" step="0.01"></td><td><select><option>✅ Normal</option><option>⚠️ Atenção</option><option>🔴 Crítico</option></select></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot da"></span> Qualidade da Água</div>
+    <div class="tw"><table id="tq">
+      <thead><tr><th>Parâmetro</th><th>Ponto de coleta</th><th>Resultado</th><th>Limite</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Turbidez</td><td><select><option>Água bruta</option><option>Pós-filtro</option><option>Saída</option></select></td><td><input type="number" step="0.01" placeholder="0,50"></td><td><input class="lim" type="text" value="&lt; 1,0 NTU"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>Cloro Residual Livre</td><td><select><option>Saída</option><option>Rede</option></select></td><td><input type="number" step="0.01" placeholder="0,50"></td><td><input class="lim" type="text" value="0,2–2,0 mg/L"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>Condutividade OR1</td><td><select><option>Permeado OR1</option><option>Alimentação OR1</option></select></td><td><input type="number" step="0.1" placeholder="50"></td><td><input class="lim" type="text" value="&lt; 200 µS/cm"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>SDI OR1</td><td><select><option>Alimentação OR1</option></select></td><td><input type="number" step="0.1" placeholder="3,0"></td><td><input class="lim" type="text" value="&lt; 5"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>SDI OR2</td><td><select><option>Alimentação OR2</option></select></td><td><input type="number" step="0.1" placeholder="3,0"></td><td><input class="lim" type="text" value="&lt; 5"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>Eficiência OR1</td><td><select><option>Sistema OR1</option></select></td><td><input type="number" step="0.1" placeholder="98,0"></td><td><input class="lim" type="text" value="&gt; 95%"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+        <tr><td>Eficiência OR2</td><td><select><option>Sistema OR2</option></select></td><td><input type="number" step="0.1" placeholder="98,0"></td><td><input class="lim" type="text" value="&gt; 95%"></td><td><select><option>✅ OK</option><option>⚠️ Atenção</option><option>🔴 Fora</option></select></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot db"></span> TLM e Regeneração</div>
+    <div class="g3">
+      <div class="fg"><span class="fl">Resultado Sílica TLM 1</span><input type="text" class="fi" id="r-tlm1" placeholder="Ex: 0,12 mg/L"></div>
+      <div class="fg"><span class="fl">Resultado Sílica TLM 2</span><input type="text" class="fi" id="r-tlm2" placeholder="Ex: 0,08 mg/L"></div>
+      <div class="fg"><span class="fl">Foi Regenerado?</span><select class="fi" id="r-regen"><option value="">Selecionar...</option><option>✅ Sim</option><option>❌ Não</option></select></div>
+      <div class="fg"><span class="fl">Qual TLM?</span><select class="fi" id="r-qual"><option value="">—</option><option>TLM 1</option><option>TLM 2</option><option>TLM 1 e 2</option><option>Não se aplica</option></select></div>
+      <div class="fg" style="grid-column:1/-1"><span class="fl">Observações TLM / Regeneração</span><input type="text" class="fi" id="r-tobs" placeholder="Detalhes adicionais..."></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot da"></span> Produto que foi dosado ou ajustado</div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:7px;margin-bottom:6px;padding:0 2px;">
+      <span class="fl">Produto</span><span class="fl">Ajuste/Qtd.</span><span class="fl">Local dosado</span><span class="fl">Troca de produto?</span>
+    </div>
+    <div id="pl"></div>
+    <button class="btn bg bsm" onclick="addProd()" style="margin-top:7px;">+ Produto</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dr"></span> Ocorrências e Anomalias</div>
+    <div id="ol"></div>
+    <button class="btn bg bsm" onclick="addOc()" style="margin-top:7px;">+ Ocorrência</button>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span class="dot dg"></span> Observações Gerais</div>
+    <textarea class="fi" id="r-obs" placeholder="Informações para o próximo turno..." style="min-height:80px;"></textarea>
+  </div>
+
+  <div class="ra">
+    <button class="btn bg" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn bg" onclick="abrirCarregar()">📂 Carregar</button>
+    <button class="btn be" onclick="enviarEmail()">📧 Supervisores</button>
+    <button class="btn bp" onclick="salvarRel()">💾 Salvar</button>
+  </div>
+</div>
+
+<!-- ===== PÁGINA HISTÓRICO ===== -->
+<div class="page" id="page-hist">
+  <p class="section-label">Consulta operacional</p>
+  <h2 class="section-title">Histórico de Relatórios</h2>
+  <p class="section-desc">Todos os relatórios salvos. Use a busca para encontrar por qualquer dado.</p>
+
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-value" id="hst">—</div><div class="stat-label">Total</div></div>
+    <div class="stat-card"><div class="stat-value" id="hsm">—</div><div class="stat-label">Este mês</div></div>
+    <div class="stat-card"><div class="stat-value" id="hso">—</div><div class="stat-label">Ocorrências</div></div>
+    <div class="stat-card"><div class="stat-value" id="hsu" style="font-size:16px">—</div><div class="stat-label">Último</div></div>
+  </div>
+
+  <div class="paineis">
+    <div class="painel-card">
+      <div class="painel-title">🔄 Dias com Regeneração</div>
+      <div id="hpr" style="font-size:11px;color:var(--muted)">Carregando...</div>
+    </div>
+    <div class="painel-card">
+      <div class="painel-title">📦 Trocas de Produto</div>
+      <div id="hpt" style="font-size:11px;color:var(--muted)">Carregando...</div>
+    </div>
+  </div>
+
+  <div class="hlayout">
+    <div class="lista-lat">
+      <div class="lista-head"><h3>📋 Registros</h3><span class="badge" id="hbc">0</span></div>
+      <input class="fi-busca" id="hfiltro" type="text" placeholder="🔍 Buscar por qualquer palavra...">
+      <div class="lista-scroll" id="hlr">
+        <div class="empty"><div class="icon">⏳</div><p>Carregando...</p></div>
+      </div>
+    </div>
+    <div id="viewer">
+      <div class="vp"><div style="font-size:36px;margin-bottom:10px;">👈</div><p>Selecione um registro para visualizar.</p></div>
+    </div>
+  </div>
+</div>
+
+<div id="bbar">
+  <span id="ss">Não salvo</span>
+  <button onclick="novoRel()">🆕</button>
+  <button onclick="abrirCarregar()">📂</button>
+  <button id="bsalvar" onclick="salvarRel()">💾 Salvar</button>
+</div>
+<div id="toast"></div>
+
+<div id="modal">
+  <div class="mbox">
+    <h3>📂 Carregar Relatório</h3>
+    <p>Selecione para editar.</p>
+    <div id="mlist"></div>
+    <button class="btn bg bsm" onclick="fechaModal()">Cancelar</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const FC={apiKey:"AIzaSyB-A8Hv8yr4HeGlyIXw3qb48sIbZTxPNk0",authDomain:"etac-cargill-b3400.firebaseapp.com",databaseURL:"https://etac-cargill-b3400-default-rtdb.firebaseio.com",projectId:"etac-cargill-b3400",storageBucket:"etac-cargill-b3400.firebasestorage.app",messagingSenderId:"1067824049583",appId:"1:1067824049583:web:3532475ca1b68717f4935a"};
+const app=initializeApp(FC);
+const db=getDatabase(app);
+
+let ck=null; // chave do relatório carregado (null = novo)
+let todosRels=[]; // cache de todos os relatórios
+let ativo=null; // chave do item ativo no histórico
+
+// ===== LOGIN =====
+window.chkLogin=function(){
+  if(document.getElementById('si').value==='1234'){
+    document.getElementById('login-overlay').style.display='none';
+    sessionStorage.setItem('etac_ok','1');
+    carregarHistorico();
+  } else {
+    document.getElementById('le').style.display='block';
+    document.getElementById('si').value='';
+  }
+};
+document.getElementById('si').addEventListener('keydown',e=>{if(e.key==='Enter')window.chkLogin();});
+if(sessionStorage.getItem('etac_ok')==='1'){
+  document.getElementById('login-overlay').style.display='none';
+  carregarHistorico();
+}
+
+// ===== NAVEGAÇÃO =====
+window.showPage=function(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  event.target.classList.add('active');
+  if(p==='hist') carregarHistorico();
+};
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded',()=>{
+  document.getElementById('r-data').value=new Date().toISOString().split('T')[0];
+  document.getElementById('r-hora').value=new Date().toTimeString().slice(0,5);
+  addOc(); addProd();
+  document.getElementById('hfiltro').addEventListener('input',filtrarHistorico);
+});
+
+// ===== COLETAR =====
+function collect(){
+  return{
+    id:{data:g('r-data'),turno:g('r-turno'),operador:g('r-op'),hora:g('r-hora'),obs:g('r-obs'),
+        silica_tlm1:g('r-tlm1'),silica_tlm2:g('r-tlm2'),regenerado:g('r-regen'),
+        tlm_qual:g('r-qual'),tlm_obs:g('r-tobs')},
+    vazoes:serTab('tv'),qualidade:serTab('tq'),
+    limites:[...document.querySelectorAll('#tq tbody tr')].map(tr=>tr.querySelectorAll('input')[1]?.value||''),
+    ocorrencias:[...document.querySelectorAll('#ol .or-row')].map(r=>{const i=r.querySelectorAll('input,textarea,select');return{hora:i[0]?.value||'',desc:i[1]?.value||'',critico:i[2]?.value||''};}).filter(o=>o.hora||o.desc),
+    produtos:[...document.querySelectorAll('#pl .pr-row')].map(r=>{const i=r.querySelectorAll('input');return{nome:i[0].value,qtd:i[1].value,local:i[2].value,troca:i[3].value};}).filter(p=>p.nome),
+    savedAt:new Date().toISOString()
+  };
+}
+function g(id){return document.getElementById(id)?.value||'';}
+function serTab(id){return[...document.querySelectorAll(`#${id} tbody tr`)].map(tr=>[...tr.querySelectorAll('input,select')].map(e=>e.value));}
+
+// ===== RESTAURAR =====
+function restore(d){
+  const id=d.id||{};
+  sv('r-data',id.data);sv('r-turno',id.turno);sv('r-op',id.operador);sv('r-hora',id.hora);sv('r-obs',id.obs||'');
+  sv('r-tlm1',id.silica_tlm1||'');sv('r-tlm2',id.silica_tlm2||'');sv('r-regen',id.regenerado||'');sv('r-qual',id.tlm_qual||'');sv('r-tobs',id.tlm_obs||'');
+  restTab('tv',d.vazoes);restTab('tq',d.qualidade);
+  if(d.limites) document.querySelectorAll('#tq tbody tr').forEach((tr,i)=>{const inp=tr.querySelectorAll('input')[1];if(inp&&d.limites[i]!==undefined)inp.value=d.limites[i];});
+  const ol=document.getElementById('ol');ol.innerHTML='';
+  (d.ocorrencias||[]).forEach(o=>ol.appendChild(mkOc(o.hora,o.desc,o.critico)));
+  if(!ol.children.length)addOc();
+  const pl=document.getElementById('pl');pl.innerHTML='';
+  (d.produtos||[]).forEach(p=>mkProd(p.nome,p.qtd,p.local,p.troca));
+  if(!pl.children.length)addProd();
+}
+function sv(id,v){const e=document.getElementById(id);if(e)e.value=v||'';}
+function restTab(id,rows){if(!rows)return;document.querySelectorAll(`#${id} tbody tr`).forEach((tr,i)=>{if(!rows[i])return;tr.querySelectorAll('input,select').forEach((e,j)=>{if(rows[i][j]!==undefined)e.value=rows[i][j];});});}
+
+// ===== SALVAR =====
+window.salvarRel=async function(){
+  const data=g('r-data'),turno=g('r-turno'),op=g('r-op');
+  if(!data||!turno||!op){toast('⚠️ Preencha Data, Turno e Operador.','e');return;}
+  if(!ck) ck=data+'_'+turno.replace(/[^a-zA-Z]/g,'')+'_'+Date.now();
+  toast('⏳ Salvando...','s');
+  try{
+    await set(ref(db,'relatorios/'+ck),collect());
+    toast('✅ Salvo: '+fmt(data)+' — '+turno,'s');
+    document.getElementById('ss').textContent='☁️ '+fmt(data);
+    document.getElementById('ss').style.color='var(--accent)';
+    showBanner(data,turno);
+    todosRels=[];// força reload do histórico
+  }catch(e){toast('❌ Erro ao salvar: '+e.message,'e');}
+};
+
+// ===== CARREGAR =====
+window.abrirCarregar=async function(){
+  toast('⏳ Buscando...','s');
+  try{
+    const snap=await get(ref(db,'relatorios'));
+    if(!snap.exists()){toast('📭 Nenhum relatório.','e');return;}
+    const rels=[];
+    snap.forEach(c=>{const d=c.val();rels.push({key:c.key,data:d.id?.data||'',turno:d.id?.turno||'',op:d.id?.operador||'',at:d.savedAt?new Date(d.savedAt).toLocaleString('pt-BR'):'—'});});
+    rels.sort((a,b)=>b.data.localeCompare(a.data));
+    const ml=document.getElementById('mlist');ml.innerHTML='';
+    rels.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='mitem';
+      div.innerHTML=`<div class="mitem-info"><div class="mitem-data">${fmt(item.data)}</div><div class="mitem-meta">${item.turno} · ${item.op||'—'} · ${item.at}</div></div><button class="btn bd bsm">🗑️</button>`;
+      div.querySelector('.bd').addEventListener('click',async e=>{
+        e.stopPropagation();
+        if(!confirm('Excluir este relatório?'))return;
+        await remove(ref(db,'relatorios/'+item.key));
+        if(ck===item.key){ck=null;document.getElementById('ss').textContent='Não salvo';escBanner();}
+        todosRels=[];
+        window.abrirCarregar();
+      });
+      div.querySelector('.mitem-info').addEventListener('click',()=>loadKey(item.key));
+      ml.appendChild(div);
+    });
+    document.getElementById('modal').style.display='flex';
+  }catch(e){toast('❌ Erro: '+e.message,'e');}
+};
+
+async function loadKey(key){
+  fechaModal();toast('⏳ Carregando...','s');
+  try{
+    const snap=await get(ref(db,'relatorios/'+key));
+    if(!snap.exists()){toast('❌ Não encontrado.','e');return;}
+    const d=snap.val();
+    restore(d);ck=key;
+    document.getElementById('ss').textContent='☁️ '+fmt(d.id.data);
+    document.getElementById('ss').style.color='var(--accent)';
+    showBanner(d.id.data,d.id.turno);
+    toast('📂 '+fmt(d.id.data)+' carregado.','s');
+    showPage('rel');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){toast('❌ Erro: '+e.message,'e');}
+}
+
+window.fechaModal=function(){document.getElementById('modal').style.display='none';};
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)window.fechaModal();});
+
+// ===== NOVO =====
+window.novoRel=function(){
+  if(ck&&!confirm('Iniciar novo? O atual já está salvo.'))return;
+  ['r-turno','r-op','r-obs','r-tlm1','r-tlm2','r-regen','r-qual','r-tobs'].forEach(id=>sv(id,''));
+  sv('r-data',new Date().toISOString().split('T')[0]);
+  sv('r-hora',new Date().toTimeString().slice(0,5));
+  document.querySelectorAll('#tv tbody tr,#tq tbody tr').forEach(tr=>{tr.querySelectorAll('input[type="number"]').forEach(i=>i.value='');tr.querySelectorAll('select').forEach(s=>s.selectedIndex=0);});
+  document.getElementById('ol').innerHTML='';addOc();
+  document.getElementById('pl').innerHTML='';addProd();
+  ck=null;
+  document.getElementById('ss').textContent='Não salvo';
+  document.getElementById('ss').style.color='var(--muted)';
+  escBanner();
+  toast('🆕 Novo relatório.','s');
+  showPage('rel');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// ===== EMAIL =====
+window.enviarEmail=function(){
+  const data=g('r-data'),turno=g('r-turno'),op=g('r-op');
+  if(!data||!turno||!op){toast('⚠️ Preencha Data, Turno e Operador.','e');return;}
+  const d=collect();
+  const lV=['Vazão de Captação','Nível Tanque Incêndio','Pressão Alim. OR1','Pressão Alim. OR2','Filtro Cart. OR1','Filtro Cart. OR2','Permeado OR1','Permeado OR2','Rejeito OR1','Rejeito OR2','Nível Desmi'];
+  const lQ=['Turbidez','Cloro Residual','Condutividade OR1','SDI OR1','SDI OR2','Eficiência OR1','Eficiência OR2'];
+  let c='RELATÓRIO ETAC CARGILL\nData: '+fmt(data)+' | Turno: '+turno+' | Operador: '+op+'\n\n';
+  c+='=== VAZÕES E PRESSÕES ===\n';
+  (d.vazoes||[]).forEach((r,i)=>{if(r[0])c+=lV[i]+': '+r[0]+' — '+(r[1]||'Normal')+'\n';});
+  c+='\n=== QUALIDADE ===\n';
+  (d.qualidade||[]).forEach((r,i)=>{if(r[1]||r[2])c+=lQ[i]+': '+(r[1]||r[2])+' ('+( d.limites?.[i]||'—')+') — '+(r[3]||r[4]||'OK')+'\n';});
+  c+='\n=== TLM / REGENERAÇÃO ===\nSílica TLM1: '+(d.id.silica_tlm1||'—')+'\nSílica TLM2: '+(d.id.silica_tlm2||'—')+'\nRegenerado: '+(d.id.regenerado||'—')+'\nQual TLM: '+(d.id.tlm_qual||'—')+'\n';
+  if(d.id.tlm_obs)c+='Obs: '+d.id.tlm_obs+'\n';
+  if(d.produtos.length){c+='\n=== PRODUTOS ===\n';d.produtos.forEach(p=>c+=p.nome+': '+p.qtd+' | '+p.local+' | Troca: '+(p.troca||'Não')+'\n');}
+  if(d.ocorrencias.length){c+='\n=== OCORRÊNCIAS ===\n';d.ocorrencias.forEach(o=>c+=(o.hora||'—')+' | '+o.desc+' | '+o.critico+'\n');}
+  if(d.id.obs)c+='\n=== OBSERVAÇÕES ===\n'+d.id.obs;
+  const to='Rodrigo_Pires@cargill.com,Fabiano_Barbosa@cargill.com,Nelson_Fernandonunesbarbosa@cargill.com';
+  window.open('mailto:'+encodeURIComponent(to)+'?subject='+encodeURIComponent('Relatório ETAC — '+fmt(data)+' — '+turno)+'&body='+encodeURIComponent(c));
+  toast('📧 Abrindo e-mail...','s');
+};
+
+// ===== HISTÓRICO =====
+async function carregarHistorico(){
+  if(todosRels.length>0){renderHistorico(todosRels);return;}
+  document.getElementById('hlr').innerHTML='<div class="empty"><div class="icon">⏳</div><p>Carregando...</p></div>';
+  try{
+    const snap=await get(ref(db,'relatorios'));
+    todosRels=[];
+    if(snap.exists()) snap.forEach(c=>todosRels.push({key:c.key,d:c.val()}));
+    todosRels.sort((a,b)=>(b.d.id?.data||'').localeCompare(a.d.id?.data||''));
+    renderHistorico(todosRels);
+    renderStats();
+    renderPaineis();
+  }catch(e){
+    document.getElementById('hlr').innerHTML='<div class="empty"><div class="icon">❌</div><p>Erro: '+e.message+'</p></div>';
+  }
+}
+
+function renderHistorico(items){
+  const c=document.getElementById('hlr');
+  document.getElementById('hbc').textContent=items.length;
+  if(!items.length){c.innerHTML='<div class="empty"><div class="icon">🔍</div><p>Nenhum resultado.</p></div>';return;}
+  c.innerHTML='';
+  items.forEach(({key,d})=>{
+    const data=d.id?.data||'',turno=d.id?.turno||'',op=d.id?.operador||'—';
+    const el=document.createElement('div');
+    el.className='litem'+(ativo===key?' active':'');
+    el.dataset.key=key;
+    const dot=turno.toLowerCase().includes('manhã')||turno.toLowerCase().includes('manha')?'m':turno.toLowerCase().includes('tarde')?'t':'n';
+    el.innerHTML='<div class="ldot '+dot+'"></div><div><div class="ldata">'+fmt(data)+'</div><div class="lmeta">'+turno.split(' ')[0]+'  ·  '+op+'</div></div>';
+    el.addEventListener('click',()=>verRelatorio(key));
+    c.appendChild(el);
+  });
+}
+
+function filtrarHistorico(){
+  const q=document.getElementById('hfiltro').value.toLowerCase().trim();
+  if(!q){renderHistorico(todosRels);return;}
+  const f=todosRels.filter(r=>{
+    const d=r.d,id=d.id||{};
+    const t=[fmt(id.data||''),id.turno||'',id.operador||'',id.obs||'',id.silica_tlm1||'',id.silica_tlm2||'',id.regenerado||'',id.tlm_qual||'',id.tlm_obs||'',
+      (d.ocorrencias||[]).map(o=>o.hora+' '+o.desc+' '+o.critico).join(' '),
+      (d.produtos||[]).map(p=>p.nome+' '+p.qtd+' '+p.local+' '+p.troca).join(' '),
+      (d.qualidade||[]).flat().join(' '),(d.vazoes||[]).flat().join(' ')
+    ].join(' ').toLowerCase();
+    return t.includes(q);
+  });
+  renderHistorico(f);
+  if(f.length>0) verRelatorio(f[0].key);
+}
+
+function renderStats(){
+  document.getElementById('hst').textContent=todosRels.length;
+  const mes=new Date().toISOString().slice(0,7);
+  document.getElementById('hsm').textContent=todosRels.filter(r=>(r.d.id?.data||'').startsWith(mes)).length;
+  document.getElementById('hso').textContent=todosRels.reduce((a,r)=>a+(r.d.ocorrencias?.length||0),0);
+  if(todosRels.length>0)document.getElementById('hsu').textContent=fmt(todosRels[0].d.id?.data||'');
+}
+
+function renderPaineis(){
+  const rd=document.getElementById('hpr');
+  const regens=todosRels.filter(r=>r.d.id?.regenerado==='✅ Sim');
+  rd.innerHTML=regens.length?regens.map(r=>{const d=r.d.id;return'<div style="padding:5px 9px;background:var(--accent-light);border-radius:7px;margin-bottom:5px;border-left:3px solid var(--accent)"><strong>'+fmt(d.data)+'</strong> — '+(d.turno?.split(' ')[0]||'—')+'<br><span style="color:var(--accent);font-size:10px">TLM: '+(d.tlm_qual||'—')+'</span></div>';}).join(''):'<span>Nenhuma registrada.</span>';
+  const td=document.getElementById('hpt');
+  const trocas=[];
+  todosRels.forEach(r=>{(r.d.produtos||[]).forEach(p=>{if(p.troca&&p.troca.trim())trocas.push({data:r.d.id?.data,produto:p.nome,troca:p.troca});});});
+  td.innerHTML=trocas.length?trocas.slice(0,8).map(t=>'<div style="padding:5px 9px;background:#fffbeb;border-radius:7px;margin-bottom:5px;border-left:3px solid var(--accent3)"><strong>'+fmt(t.data)+'</strong> — '+(t.produto||'—')+'<br><span style="color:var(--accent3);font-size:10px">📦 '+t.troca+'</span></div>').join(''):'<span>Nenhuma registrada.</span>';
+}
+
+function verRelatorio(key){
+  const item=todosRels.find(r=>r.key===key);
+  if(!item)return;
+  ativo=key;
+  document.querySelectorAll('.litem').forEach(el=>el.classList.toggle('active',el.dataset.key===key));
+  const d=item.d,id=d.id||{};
+  const lV=['Vazão de Captação','Nível Tanque de Incêndio','Pressão Alimentação OR1','Pressão Alimentação OR2','Pressão Filtro Cartucho OR1','Pressão Filtro Cartucho OR2','Vazão Permeado OR1','Vazão Permeado OR2','Vazão Rejeito OR1','Vazão Rejeito OR2','Nível Tanque Desmi'];
+  const lQ=['Turbidez','Cloro Residual Livre','Condutividade OR1','SDI OR1','SDI OR2','Eficiência OR1','Eficiência OR2'];
+  let h='<div class="va"><button class="btn bg bsm" onclick="window.print()">🖨️ Imprimir</button><button class="btn bd bsm" onclick="delRel(\''+key+'\')">🗑️ Excluir</button><button class="btn bp bsm" onclick="editarRel(\''+key+'\')">✏️ Editar</button></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot dg"></span> Identificação</div><div class="vhg"><div class="vf"><span class="vfl">Data</span><span class="vfv">'+fmt(id.data)+'</span></div><div class="vf"><span class="vfl">Turno</span><span class="vfv">'+(id.turno||'—')+'</span></div><div class="vf"><span class="vfl">Operador</span><span class="vfv">'+(id.operador||'—')+'</span></div><div class="vf"><span class="vfl">Hora</span><span class="vfv">'+(id.hora||'—')+'</span></div></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot db"></span> Vazões e Pressões</div><div class="tw"><table class="vt"><thead><tr><th>Ponto</th><th>Valor</th><th>Situação</th></tr></thead><tbody>';
+  (d.vazoes||[]).forEach((r,i)=>{const s=r[1]||'';const c=s.includes('Crítico')?'color:var(--danger);font-weight:700':s.includes('Atenção')?'color:var(--accent3)':'color:var(--accent)';h+='<tr><td>'+(lV[i]||'')+'</td><td>'+(r[0]||'—')+'</td><td style="'+c+'">'+(s||'—')+'</td></tr>';});
+  h+='</tbody></table></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot da"></span> Qualidade da Água</div><div class="tw"><table class="vt"><thead><tr><th>Parâmetro</th><th>Ponto</th><th>Resultado</th><th>Limite</th><th>Status</th></tr></thead><tbody>';
+  (d.qualidade||[]).forEach((r,i)=>{const s=r[3]||r[4]||'';const c=s.includes('Fora')?'color:var(--danger);font-weight:700':s.includes('Atenção')?'color:var(--accent3)':'color:var(--accent)';h+='<tr><td>'+(lQ[i]||'')+'</td><td>'+(r[0]||'—')+'</td><td>'+(r[1]||r[2]||'—')+'</td><td style="font-size:10px;color:var(--muted)">'+((d.limites&&d.limites[i])||'—')+'</td><td style="'+c+'">'+(s||'—')+'</td></tr>';});
+  h+='</tbody></table></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot db"></span> TLM e Regeneração</div><div class="vhg"><div class="vf"><span class="vfl">Sílica TLM 1</span><span class="vfv">'+(id.silica_tlm1||'—')+'</span></div><div class="vf"><span class="vfl">Sílica TLM 2</span><span class="vfv">'+(id.silica_tlm2||'—')+'</span></div><div class="vf"><span class="vfl">Regenerado?</span><span class="vfv">'+(id.regenerado||'—')+'</span></div><div class="vf"><span class="vfl">Qual TLM?</span><span class="vfv">'+(id.tlm_qual||'—')+'</span></div>'+(id.tlm_obs?'<div class="vf" style="grid-column:1/-1"><span class="vfl">Obs.</span><span class="vfv">'+id.tlm_obs+'</span></div>':'')+'</div></div>';
+  const prods=(d.produtos||[]).filter(p=>p.nome);
+  h+='<div class="vc"><div class="vct"><span class="dot da"></span> Produtos Dosados</div>';
+  if(!prods.length)h+='<p style="font-size:11px;color:var(--muted)">Nenhum produto.</p>';
+  else{h+='<table class="vt"><thead><tr><th>Produto</th><th>Qtd.</th><th>Local</th><th>Troca</th></tr></thead><tbody>';prods.forEach(p=>{h+='<tr><td>'+(p.nome||'—')+'</td><td>'+(p.qtd||'—')+'</td><td>'+(p.local||'—')+'</td><td>'+(p.troca?'<span style="color:var(--accent3);font-weight:600">📦 '+p.troca+'</span>':'—')+'</td></tr>';});h+='</tbody></table>';}
+  h+='</div>';
+  const ocs=(d.ocorrencias||[]).filter(o=>o.hora||o.desc);
+  h+='<div class="vc"><div class="vct"><span class="dot dr"></span> Ocorrências</div>';
+  if(!ocs.length)h+='<p style="font-size:11px;color:var(--muted)">Nenhuma ocorrência.</p>';
+  else ocs.forEach(oc=>{const cl={Informativo:'info',Atenção:'atencao',Urgente:'urgente',Crítico:'critico'}[oc.critico]||'info';h+='<div class="ov"><div class="oh">'+(oc.hora||'—')+'</div><div class="od">'+(oc.desc||'—')+'</div><div class="ocr '+cl+'">'+(oc.critico||'')+'</div></div>';});
+  h+='</div>';
+  if(id.obs)h+='<div class="vc"><div class="vct"><span class="dot dg"></span> Observações</div><div class="obs-box">'+id.obs+'</div></div>';
+  document.getElementById('viewer').innerHTML=h;
+  document.getElementById('viewer').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+window.editarRel=async function(key){
+  toast('⏳ Carregando para edição...','s');
+  const snap=await get(ref(db,'relatorios/'+key));
+  if(!snap.exists()){toast('❌ Não encontrado.','e');return;}
+  const d=snap.val();restore(d);ck=key;
+  document.getElementById('ss').textContent='☁️ '+fmt(d.id.data);
+  document.getElementById('ss').style.color='var(--accent)';
+  showBanner(d.id.data,d.id.turno);
+  // Navegar para aba relatório
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-rel').classList.add('active');
+  document.querySelector('.tab').classList.add('active');
+  toast('📂 '+fmt(d.id.data)+' carregado para edição.','s');
+  window.scrollTo({top:0,behavior:'smooth'});
+};
+
+window.delRel=async function(key){
+  if(!confirm('Excluir permanentemente?'))return;
+  await remove(ref(db,'relatorios/'+key));
+  ativo=null;todosRels=[];
+  document.getElementById('viewer').innerHTML='<div class="vp"><div style="font-size:36px;margin-bottom:10px;">🗑️</div><p>Excluído.</p></div>';
+  carregarHistorico();
+};
+
+// ===== OCORRÊNCIAS =====
+window.addOc=function(){document.getElementById('ol').appendChild(mkOc('','','Informativo'));};
+function mkOc(hora,desc,critico){
+  const r=document.createElement('div');r.className='or-row';
+  r.innerHTML='<div class="fg"><span class="fl">Horário</span><input type="time" class="fi" value="'+(hora||'')+'"></div><div class="fg"><span class="fl">Descrição</span><textarea class="fi" placeholder="Descreva...">'+(desc||'')+'</textarea></div><div class="fg"><span class="fl">Criticidade</span><select class="fi"><option '+(critico==='Informativo'?'selected':'')+'>Informativo</option><option '+(critico==='Atenção'?'selected':'')+'>Atenção</option><option '+(critico==='Urgente'?'selected':'')+'>Urgente</option><option '+(critico==='Crítico'?'selected':'')+'>Crítico</option></select></div>';
+  return r;
+}
+
+// ===== PRODUTOS =====
+window.addProd=function(){mkProd('','','','');};
+function mkProd(nome,qtd,local,troca){
+  const r=document.createElement('div');r.className='pr-row';
+  r.innerHTML='<input type="text" class="fi" placeholder="Nome do produto..." value="'+(nome||'')+'"><input type="text" class="fi" placeholder="Qtd./Ajuste" value="'+(qtd||'')+'"><input type="text" class="fi" placeholder="Local dosado" value="'+(local||'')+'"><input type="text" class="fi" placeholder="Troca? Ex: IBC" value="'+(troca||'')+'">';
+  document.getElementById('pl').appendChild(r);
+}
+
+// ===== HELPERS =====
+function fmt(iso){if(!iso)return'—';const[y,m,d]=iso.split('-');return d+'/'+m+'/'+y;}
+function toast(msg,type){const t=document.getElementById('toast');t.textContent=msg;t.className=type||'s';t.style.display='block';setTimeout(()=>t.style.display='none',3500);}
+function showBanner(data,turno){const b=document.getElementById('hbanner');document.getElementById('hbt').innerHTML='📂 Editando: <strong>'+fmt(data)+' — '+turno+'</strong>';b.style.display='flex';}
+function escBanner(){document.getElementById('hbanner').style.display='none';}
+function showPage(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  if(p==='hist'){todosRels=[];carregarHistorico();}
+}
+</script>
+</body>
+</html>
