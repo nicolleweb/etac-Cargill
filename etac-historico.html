@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETAC Histórico</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--g:#00703C;--gd:#005a30;--gl:#e6f4ed;--r:#dc2626;--a:#d97706;--t:#1a1f2e;--m:#6b7280;--b:#f0f2f4;--s:#fff;--s2:#f4f6f8;--br:#dde1e7}
+body{font-family:'Sora',sans-serif;background:var(--b);color:var(--t);min-height:100vh}
+header{background:var(--g);padding:0 24px;min-height:58px;display:flex;align-items:stretch;border-bottom:3px solid var(--gd)}
+.hl{display:flex;align-items:center;gap:8px;padding-right:16px;margin-right:16px;border-right:1px solid rgba(255,255,255,0.2)}
+.hi{width:32px;height:32px;background:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center}
+.hn{font-weight:700;font-size:14px;color:#fff}
+.hd{display:flex;flex-direction:column;justify-content:center}
+.hd h1{font-size:13px;font-weight:700;color:#fff}
+.hd span{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:1px;text-transform:uppercase}
+nav{margin-left:auto;display:flex;align-items:stretch}
+.nv{color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;padding:0 16px;border-bottom:3px solid transparent;display:flex;align-items:center;gap:5px;text-decoration:none;transition:all 0.2s}
+.nv:hover{color:#fff;background:rgba(255,255,255,0.1)}
+.nv.active{color:#fff;border-bottom-color:#fff}
+main{padding:24px;max-width:1200px}
+.sl{font-size:10px;color:var(--g);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px;font-weight:600}
+.st{font-size:22px;font-weight:700;margin-bottom:4px}
+.sd{color:var(--m);font-size:13px;margin-bottom:20px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.sc{background:var(--s);border:1px solid var(--br);border-radius:11px;padding:14px;text-align:center}
+.sv{font-size:22px;font-weight:700;color:var(--g);line-height:1;margin-bottom:3px}
+.sl2{font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:0.8px}
+.paineis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.pc{background:var(--s);border:1px solid var(--br);border-radius:11px;padding:14px 16px}
+.pt{font-size:12px;font-weight:700;margin-bottom:8px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:14px}
+.lista{background:var(--s);border:1px solid var(--br);border-radius:11px;overflow:hidden;display:flex;flex-direction:column;max-height:75vh;position:sticky;top:14px}
+.lh{padding:10px 12px;border-bottom:1px solid var(--br);display:flex;align-items:center;gap:6px;flex-shrink:0}
+.lh h3{font-size:12px;font-weight:700;flex:1}
+.badge{background:var(--gl);color:var(--g);font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.busca{width:100%;background:var(--s2);border:none;border-bottom:1px solid var(--br);padding:8px 12px;font-family:'Sora',sans-serif;font-size:12px;color:var(--t);outline:none;flex-shrink:0}
+.busca:focus{background:var(--gl)}
+.lscroll{overflow-y:auto;flex:1}
+.li{padding:9px 12px;border-bottom:1px solid rgba(221,225,231,0.5);cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.15s}
+.li:hover{background:var(--s2)}
+.li.on{background:var(--gl);border-left:3px solid var(--g)}
+.ldot{width:7px;height:7px;border-radius:50%;background:var(--g);flex-shrink:0}
+.ldot.m{background:#f59e0b}.ldot.t{background:#3b82f6}.ldot.n{background:#6366f1}
+.ldata{font-weight:700;font-size:12px}
+.lmeta{font-size:10px;color:var(--m);margin-top:1px}
+.empty{padding:22px 12px;text-align:center;color:var(--m);font-size:12px}
+.empty .ico{font-size:24px;margin-bottom:5px}
+#view .vp{background:var(--s);border:1px solid var(--br);border-radius:11px;padding:36px 24px;text-align:center;color:var(--m)}
+.vc{background:var(--s);border:1px solid var(--br);border-radius:11px;padding:14px 16px;margin-bottom:10px}
+.vct{font-size:12px;font-weight:700;margin-bottom:9px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--br);padding-bottom:7px}
+.vct .dot{width:7px;height:7px;border-radius:50%}
+.dg{background:var(--g)}.db{background:#2e7d52}.da{background:var(--a)}.dr{background:var(--r)}
+.vg{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.vf{display:flex;flex-direction:column;gap:2px}
+.vfl{font-size:9px;color:var(--m);text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.vfv{font-size:12px;font-weight:600}
+.tw{overflow-x:auto}
+.vt{width:100%;border-collapse:collapse;font-size:11px}
+.vt th{background:#f0f5f2;color:var(--m);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 9px;text-align:left;border-bottom:1px solid var(--br)}
+.vt td{padding:6px 9px;border-bottom:1px solid rgba(221,225,231,0.5)}
+.ov{background:var(--s2);border:1px solid var(--br);border-radius:8px;padding:8px 10px;margin-bottom:6px;display:grid;grid-template-columns:65px 1fr 90px;gap:6px}
+.oh{font-size:11px;font-weight:700;color:var(--g)}
+.od{font-size:11px;line-height:1.4}
+.ocl{font-size:9px;padding:2px 5px;border-radius:20px;text-align:center;align-self:start}
+.ocl.info{background:rgba(0,112,60,0.1);color:var(--g)}.ocl.atencao{background:rgba(245,158,11,0.1);color:var(--a)}.ocl.urgente,.ocl.critico{background:rgba(220,38,38,0.1);color:var(--r)}
+.obs{background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:10px;font-size:11px;line-height:1.6;white-space:pre-wrap}
+.va{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:7px;border:none;cursor:pointer;font-family:'Sora',sans-serif;font-size:11px;font-weight:600;transition:all 0.2s}
+.bg{background:transparent;color:var(--m);border:1px solid var(--br)}.bg:hover{color:var(--t);border-color:var(--t)}
+.bd{background:transparent;color:var(--r);border:1px solid rgba(220,38,38,0.3)}.bd:hover{background:rgba(220,38,38,0.05)}
+#load{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.8);z-index:999;align-items:center;justify-content:center;font-size:14px;font-weight:600;color:var(--g)}
+@media(max-width:700px){header{padding:12px 12px 0;flex-wrap:wrap}nav{margin-left:0;width:100%;overflow-x:auto}main{padding:14px}.stats{grid-template-columns:1fr 1fr}.paineis{grid-template-columns:1fr}.layout{grid-template-columns:1fr}.lista{max-height:240px;position:static}.vg{grid-template-columns:1fr 1fr}.ov{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="load">⏳ Carregando...</div>
+<header>
+  <div class="hl">
+    <div class="hi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8 2 4 6 4 10c0 5 8 12 8 12s8-7 8-12c0-4-4-8-8-8z" fill="#00703C"/><circle cx="12" cy="10" r="3" fill="white"/></svg></div>
+    <span class="hn">Cargill</span>
+  </div>
+  <div class="hd"><h1>Histórico — ETAC</h1><span>Consulta de relatórios</span></div>
+  <nav>
+    <a class="nv" href="etac-relatorio.html">📋 Relatório</a>
+    <a class="nv active" href="etac-historico.html">🗂️ Histórico</a>
+  </nav>
+</header>
+<main>
+  <p class="sl">Consulta operacional</p>
+  <h2 class="st">Histórico de Relatórios</h2>
+  <p class="sd">Todos os relatórios salvos. Use a busca para encontrar por qualquer dado.</p>
+  <div class="stats">
+    <div class="sc"><div class="sv" id="st">—</div><div class="sl2">Total</div></div>
+    <div class="sc"><div class="sv" id="sm">—</div><div class="sl2">Este mês</div></div>
+    <div class="sc"><div class="sv" id="so">—</div><div class="sl2">Ocorrências</div></div>
+    <div class="sc"><div class="sv" id="su" style="font-size:15px">—</div><div class="sl2">Último</div></div>
+  </div>
+  <div class="paineis">
+    <div class="pc"><div class="pt">🔄 Dias com Regeneração</div><div id="pr" style="font-size:11px;color:var(--m)">Carregando...</div></div>
+    <div class="pc"><div class="pt">📦 Trocas de Produto</div><div id="pt2" style="font-size:11px;color:var(--m)">Carregando...</div></div>
+  </div>
+  <div class="layout">
+    <div class="lista">
+      <div class="lh"><h3>📋 Registros</h3><span class="badge" id="bc">0</span></div>
+      <input class="busca" id="busca" type="text" placeholder="🔍 Buscar por qualquer palavra...">
+      <div class="lscroll" id="lr"><div class="empty"><div class="ico">⏳</div><p>Carregando...</p></div></div>
+    </div>
+    <div id="view"><div class="vp"><div style="font-size:34px;margin-bottom:8px">👈</div><p>Selecione um registro para visualizar.</p></div></div>
+  </div>
+</main>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,get,remove}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyB-A8Hv8yr4HeGlyIXw3qb48sIbZTxPNk0",authDomain:"etac-cargill-b3400.firebaseapp.com",databaseURL:"https://etac-cargill-b3400-default-rtdb.firebaseio.com",projectId:"etac-cargill-b3400",storageBucket:"etac-cargill-b3400.firebasestorage.app",messagingSenderId:"1067824049583",appId:"1:1067824049583:web:3532475ca1b68717f4935a"});
+const db=getDatabase(app);
+let todos=[],ativo=null;
+const L=document.getElementById('load');
+document.getElementById('busca').addEventListener('input',filtrar);
+
+// CARREGAR SEMPRE DIRETO DO FIREBASE, SEM CACHE
+async function load(){
+  L.style.display='flex';
+  document.getElementById('lr').innerHTML='<div class="empty"><div class="ico">⏳</div><p>Carregando...</p></div>';
+  try{
+    const snap=await get(ref(db,'relatorios'));
+    todos=[];
+    if(snap.exists()){
+      snap.forEach(c=>todos.push({key:c.key,d:c.val()}));
+    }
+    todos.sort((a,b)=>(b.d.id?.data||'').localeCompare(a.d.id?.data||''));
+    stats();paineis();renderLista(todos);
+  }catch(e){
+    document.getElementById('lr').innerHTML='<div class="empty"><div class="ico">❌</div><p>Erro ao conectar.<br><small>'+e.message+'</small></p></div>';
+  }finally{
+    L.style.display='none';
+  }
+}
+load();
+
+function filtrar(){
+  const q=document.getElementById('busca').value.toLowerCase().trim();
+  if(!q){renderLista(todos);return}
+  const f=todos.filter(r=>{
+    const d=r.d,id=d.id||{};
+    const txt=[fmt(id.data||''),id.turno||'',id.operador||'',id.obs||'',id.silica_tlm1||'',id.silica_tlm2||'',id.regenerado||'',id.tlm_qual||'',id.tlm_obs||'',
+      (d.ocorrencias||[]).map(o=>o.hora+' '+o.desc+' '+o.critico).join(' '),
+      (d.produtos||[]).map(p=>p.nome+' '+p.qtd+' '+p.local+' '+p.troca).join(' '),
+      (d.qualidade||[]).flat().join(' '),(d.vazoes||[]).flat().join(' ')
+    ].join(' ').toLowerCase();
+    return txt.includes(q);
+  });
+  renderLista(f);
+  if(f.length>0)ver(f[0].key);
+}
+
+function renderLista(items){
+  const c=document.getElementById('lr');
+  document.getElementById('bc').textContent=items.length;
+  if(!items.length){c.innerHTML='<div class="empty"><div class="ico">🔍</div><p>Nenhum resultado.</p></div>';return}
+  c.innerHTML='';
+  items.forEach(({key,d})=>{
+    const data=d.id?.data||'',turno=d.id?.turno||'',op=d.id?.operador||'—';
+    const el=document.createElement('div');
+    el.className='li'+(ativo===key?' on':'');
+    el.dataset.key=key;
+    const dot=turno.toLowerCase().includes('manhã')||turno.toLowerCase().includes('manha')?'m':turno.toLowerCase().includes('tarde')?'t':'n';
+    el.innerHTML='<div class="ldot '+dot+'"></div><div><div class="ldata">'+fmt(data)+'</div><div class="lmeta">'+turno.split(' ')[0]+' · '+op+'</div></div>';
+    el.addEventListener('click',()=>ver(key));
+    c.appendChild(el);
+  });
+}
+
+function stats(){
+  document.getElementById('st').textContent=todos.length;
+  const mes=new Date().toISOString().slice(0,7);
+  document.getElementById('sm').textContent=todos.filter(r=>(r.d.id?.data||'').startsWith(mes)).length;
+  document.getElementById('so').textContent=todos.reduce((a,r)=>a+(r.d.ocorrencias?.length||0),0);
+  if(todos.length>0)document.getElementById('su').textContent=fmt(todos[0].d.id?.data||'');
+}
+
+function paineis(){
+  const rd=document.getElementById('pr');
+  const regens=todos.filter(r=>r.d.id?.regenerado==='✅ Sim');
+  rd.innerHTML=regens.length?regens.map(r=>{const d=r.d.id;return'<div style="padding:5px 8px;background:var(--gl);border-radius:6px;margin-bottom:4px;border-left:3px solid var(--g)"><strong>'+fmt(d.data)+'</strong> — '+(d.turno?.split(' ')[0]||'—')+'<br><span style="color:var(--g);font-size:10px">TLM: '+(d.tlm_qual||'—')+'</span></div>'}).join(''):'<span>Nenhuma registrada.</span>';
+  const td=document.getElementById('pt2');
+  const trocas=[];
+  todos.forEach(r=>{(r.d.produtos||[]).forEach(p=>{if(p.troca&&p.troca.trim())trocas.push({data:r.d.id?.data,produto:p.nome,troca:p.troca})})});
+  td.innerHTML=trocas.length?trocas.slice(0,8).map(t=>'<div style="padding:5px 8px;background:#fffbeb;border-radius:6px;margin-bottom:4px;border-left:3px solid var(--a)"><strong>'+fmt(t.data)+'</strong> — '+(t.produto||'—')+'<br><span style="color:var(--a);font-size:10px">📦 '+t.troca+'</span></div>').join(''):'<span>Nenhuma registrada.</span>';
+}
+
+function ver(key){
+  const item=todos.find(r=>r.key===key);
+  if(!item)return;
+  ativo=key;
+  document.querySelectorAll('.li').forEach(el=>el.classList.toggle('on',el.dataset.key===key));
+  const d=item.d,id=d.id||{};
+  const lV=['Vazão de Captação','Nível Tanque de Incêndio','Pressão Alim. OR1','Pressão Alim. OR2','Filtro Cartucho OR1','Filtro Cartucho OR2','Permeado OR1','Permeado OR2','Rejeito OR1','Rejeito OR2','Nível Tanque Desmi'];
+  const lQ=['Turbidez','Cloro Residual Livre','Condutividade OR1','SDI OR1','SDI OR2','Eficiência OR1','Eficiência OR2'];
+  let h='<div class="va"><button class="btn bg" onclick="window.print()">🖨️ Imprimir</button><button class="btn bd" onclick="del(\''+key+'\')">🗑️ Excluir</button></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot dg"></span>Identificação</div><div class="vg"><div class="vf"><span class="vfl">Data</span><span class="vfv">'+fmt(id.data)+'</span></div><div class="vf"><span class="vfl">Turno</span><span class="vfv">'+(id.turno||'—')+'</span></div><div class="vf"><span class="vfl">Operador</span><span class="vfv">'+(id.operador||'—')+'</span></div><div class="vf"><span class="vfl">Hora</span><span class="vfv">'+(id.hora||'—')+'</span></div></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot db"></span>Vazões e Pressões</div><div class="tw"><table class="vt"><thead><tr><th>Ponto</th><th>Valor</th><th>Situação</th></tr></thead><tbody>';
+  (d.vazoes||[]).forEach((r,i)=>{const s=r[1]||'';const c=s.includes('Crítico')?'color:#dc2626;font-weight:700':s.includes('Atenção')?'color:#d97706':'color:#00703C';h+='<tr><td>'+(lV[i]||'')+'</td><td>'+(r[0]||'—')+'</td><td style="'+c+'">'+(s||'—')+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot da"></span>Qualidade da Água</div><div class="tw"><table class="vt"><thead><tr><th>Parâmetro</th><th>Ponto</th><th>Resultado</th><th>Limite</th><th>Status</th></tr></thead><tbody>';
+  (d.qualidade||[]).forEach((r,i)=>{const s=r[3]||r[4]||'';const c=s.includes('Fora')?'color:#dc2626;font-weight:700':s.includes('Atenção')?'color:#d97706':'color:#00703C';h+='<tr><td>'+(lQ[i]||'')+'</td><td>'+(r[0]||'—')+'</td><td>'+(r[1]||r[2]||'—')+'</td><td style="font-size:9px;color:var(--m)">'+((d.limites&&d.limites[i])||'—')+'</td><td style="'+c+'">'+(s||'—')+'</td></tr>'});
+  h+='</tbody></table></div></div>';
+  h+='<div class="vc"><div class="vct"><span class="dot db"></span>TLM e Regeneração</div><div class="vg"><div class="vf"><span class="vfl">Sílica TLM 1</span><span class="vfv">'+(id.silica_tlm1||'—')+'</span></div><div class="vf"><span class="vfl">Sílica TLM 2</span><span class="vfv">'+(id.silica_tlm2||'—')+'</span></div><div class="vf"><span class="vfl">Regenerado?</span><span class="vfv">'+(id.regenerado||'—')+'</span></div><div class="vf"><span class="vfl">Qual TLM?</span><span class="vfv">'+(id.tlm_qual||'—')+'</span></div>'+(id.tlm_obs?'<div class="vf" style="grid-column:1/-1"><span class="vfl">Obs.</span><span class="vfv">'+id.tlm_obs+'</span></div>':'')+'</div></div>';
+  const prods=(d.produtos||[]).filter(p=>p.nome);
+  h+='<div class="vc"><div class="vct"><span class="dot da"></span>Produtos Dosados</div>';
+  if(!prods.length)h+='<p style="font-size:11px;color:var(--m)">Nenhum produto.</p>';
+  else{h+='<table class="vt"><thead><tr><th>Produto</th><th>Qtd.</th><th>Local</th><th>Troca</th></tr></thead><tbody>';prods.forEach(p=>{h+='<tr><td>'+(p.nome||'—')+'</td><td>'+(p.qtd||'—')+'</td><td>'+(p.local||'—')+'</td><td>'+(p.troca?'<span style="color:#d97706;font-weight:600">📦 '+p.troca+'</span>':'—')+'</td></tr>'});h+='</tbody></table>'}
+  h+='</div>';
+  const ocs=(d.ocorrencias||[]).filter(o=>o.hora||o.desc);
+  h+='<div class="vc"><div class="vct"><span class="dot dr"></span>Ocorrências</div>';
+  if(!ocs.length)h+='<p style="font-size:11px;color:var(--m)">Nenhuma.</p>';
+  else ocs.forEach(oc=>{const cl={Informativo:'info',Atenção:'atencao',Urgente:'urgente',Crítico:'critico'}[oc.critico]||'info';h+='<div class="ov"><div class="oh">'+(oc.hora||'—')+'</div><div class="od">'+(oc.desc||'—')+'</div><div class="ocl '+cl+'">'+(oc.critico||'')+'</div></div>'});
+  h+='</div>';
+  if(id.obs)h+='<div class="vc"><div class="vct"><span class="dot dg"></span>Observações</div><div class="obs">'+id.obs+'</div></div>';
+  document.getElementById('view').innerHTML=h;
+  document.getElementById('view').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+window.del=async key=>{
+  if(!confirm('Excluir permanentemente?'))return;
+  L.style.display='flex';
+  await remove(ref(db,'relatorios/'+key));
+  ativo=null;
+  document.getElementById('view').innerHTML='<div class="vp"><div style="font-size:34px;margin-bottom:8px">🗑️</div><p>Excluído.</p></div>';
+  load();
+};
+
+function fmt(iso){if(!iso)return'—';const[y,m,d]=iso.split('-');return d+'/'+m+'/'+y}
+</script>
+</body>
+</html>
